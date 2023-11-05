@@ -18,6 +18,11 @@ _This software is not affiliated with or endorsed by HP. Any brand names are use
 
 ## Version History
 
+### 0.52 (2023-11-05)
+
+  * Fix `DynamicIcon` and `DynamicIconHasBackground` configuration settings not being saved
+  * Resolve the issue when unless the main window is being shown, temperature sensors are not updated before calculating maximum temperature. Thank you to **[@wangzhengbin](https://github.com/wangzhengbin)** for reporting this issue.
+
 ### 0.51 (2023-11-05)
 
   * Resolve the issue when a BIOS call to check throttling status results in an unhandled exception where not supported. The call is not supported on 2023 models where it yields BIOS error code 6. The status will now be reported as _Unknown_ in these scenarios. Thank you to **[@breadeding](https://github.com/breadeding)** for contributing information that made it possible to fix this issue.
