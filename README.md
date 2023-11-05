@@ -15,3 +15,19 @@ Most features are specific to _HP_ devices with a compatible BIOS interface expo
 Full documentation is available at [https://omenmon.github.io/](https://omenmon.github.io/)
 
 _This software is not affiliated with or endorsed by HP. Any brand names are used for informational purposes only._
+
+## Version History
+
+### 0.51 (2023-11-05)
+
+  * Resolve the issue when a BIOS call to check throttling status results in an unhandled exception where not supported. The call is not supported on 2023 models where it yields BIOS error code 6. The status will now be reported as _Unknown_ in these scenarios. Thank you to **[@breadeding](https://github.com/breadeding)** for contributing information that made it possible to fix this issue.
+  * Main window title consistency fix
+
+### 0.50 (2023-11-04)
+
+  * Initial public preview
+  * Publish a complete documentation at [omenmon.github.io](https://omenmon.github.io/)
+  * Publish an XML translation template at [github.com/OmenMon/Localization](https://github.com/OmenMon/Localization)
+  * Detect _PowerShell_ console to workaround output issues
+
+**OmenMon** is feature-complete and fully works on the _HP Omen_ `8A14` (`Ralph 22C1` or _Omen 16_) platform I can test it with on Windows 10 `21H2` (`10.0.19044`). Since all the functionality is very hardware-specific, there might be issues on other platforms different from the one I have, which will have to be ironed out. Thus, only a preview release for now but it _should_ fully work – as long as your laptop is similar enough to mine.
