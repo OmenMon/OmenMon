@@ -18,6 +18,13 @@ _This software is not affiliated with or endorsed by HP. Any brand names are use
 
 ## Version History
 
+### 0.54 (2023-11-06)
+
+  * Make platform fan and temperature array setup model-dependent
+  * Make BIOS calls to retrieve GPU mode not raise an exception on unsupported models, hide the menu items related to GPU mode in such scenarios
+  * Add `GuiDpiChangeResize` configuration option to set whether the window should be automatically resized in response to DPI changes
+  * Add `GuiSysInfoFontSize` configuration option to override the font size used for _System Information & Status_
+
 ### 0.53 (2023-11-06)
 
   * Update missing localization string for _Unknown_ throttling status (introduced in 0.51)
