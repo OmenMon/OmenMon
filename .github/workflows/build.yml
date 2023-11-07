@@ -1,9 +1,10 @@
+#
 #  //\\   OmenMon: Hardware Monitoring & Control Utility
 # //  \\  Copyright © 2023 Piotr Szczepański * License: GPL3
 #     //  https://omenmon.github.io/
 #
-#
 # OmenMon Build Workflow
+# Builds the application with the specified version data
 
 name: "OmenMon Build"
 run-name: "OmenMon Build by ${{ github.actor }}"
@@ -18,7 +19,7 @@ on:
         type: string
       version_word:
         description: "Version word indicating build type"
-        default: "Manual"
+        default: "Workflow-C"
         required: false
         type: string
 
@@ -31,7 +32,7 @@ on:
         type: string
       version_word:
         description: "Version word indicating build type"
-        default: "Manual"
+        default: "Workflow-D"
         required: false
         type: string
 
@@ -39,6 +40,11 @@ permissions:
   contents: read
 
 jobs:
+  Call-Bump-Build:
+    name: "Call Bump up Build Number"
+    secrets: inherit
+    uses: ./.github/workflows/build_bump.yml
+
   Build-OmenMon:
     name: "Build OmenMon"
     runs-on: windows-2022
@@ -66,16 +72,16 @@ jobs:
         msbuild-architecture: x64
         vs-version: "[17.7,)"
 
-    - name: "Build the Solution"
+    - name: "Run Microsoft Build"
       working-directory: ${{ github.workspace }}
       run: >
         msbuild -m -noLogo
-        -p:AssemblyVersion=${{inputs.version_number}}.${{github.run_attempt}}
+        -p:AssemblyVersion=${{inputs.version_number}}.${{vars.BUILD_NUMBER}}
         -p:AssemblyVersionWord=${{inputs.version_word}}
         -p:Configuration=${{matrix.configuration}}
         -t:Build ${{vars.SOLUTION_FILE}}
 
-    - name: "Upload Build Artifacts"
+    - name: "Upload OmenMon"
       uses: actions/upload-artifact@v3
       with:
         if-no-files-found: error
