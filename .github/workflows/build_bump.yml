@@ -11,8 +11,8 @@ run-name: "OmenMon Build Bump by ${{ github.actor }}"
 
 on: [workflow_call, workflow_dispatch]
 
-#permissions:
-#  contents: read
+permissions:
+  actions: write
 
 jobs:
   Bump-Build:
@@ -20,6 +20,11 @@ jobs:
     runs-on: windows-2022
 
     steps:
+    - name: "Increment Build Number"
+      run: >
+        $env:BUILD_NUMBER = ${{ vars.BUILD_NUMBER }} + 1
+      shell: pwsh
+
     - name: "Call REST API"
       run: >
         curl -L
@@ -28,4 +33,4 @@ jobs:
         -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}"
         -H "X-GitHub-Api-Version: 2022-11-28"
         https://api.github.com/repos/OmenMon/OmenMon/actions/variables/BUILD_NUMBER \
-        -d '{"name":"BUILD_NUMBER","value":"$(${{vars.BUILD_NUMBER}} + 1)"}'
+        -d '{"name":"BUILD_NUMBER","value":"$(${{env.BUILD_NUMBER}} + 1)"}'
