@@ -10,7 +10,7 @@ run-name: "OmenMon"
 
 env:
   RESOURCES_DIR: "Resources"
-  RESOURCES_REPO: "OmenMon\Resources"
+  RESOURCES_REPO: "OmenMon/Resources"
   SOLUTION_FILE: "OmenMon.sln"
 
 on:
