@@ -9,6 +9,10 @@
 name: "OmenMon Build"
 run-name: "OmenMon Build by ${{ github.actor }}"
 
+concurrency:
+  group: ${{ github.ref }}
+  #cancel-in-progress: true
+
 on:
   workflow_call:
     inputs:
