@@ -1,0 +1,6 @@
+# OmenMon
+# Git Ignored Files
+
+# Build Output
+Bin/
+Obj/
