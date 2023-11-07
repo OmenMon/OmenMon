@@ -11,12 +11,10 @@ run-name: "OmenMon Build Bump by ${{ github.actor }}"
 
 on: [workflow_call, workflow_dispatch]
 
-permissions:
-  actions: write
-
 jobs:
   Bump-Build:
     name: "Bump up Build Number"
+    permissions: write-all
     runs-on: windows-2022
 
     steps:
