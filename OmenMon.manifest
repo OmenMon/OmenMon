@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<a1:assembly manifestVersion="1.0"
+    xmlns:a1="urn:schemas-microsoft-com:asm.v1"
+    xmlns:a2="urn:schemas-microsoft-com:asm.v2"
+    xmlns:a3="urn:schemas-microsoft-com:asm.v3"
+    xmlns:c1="urn:schemas-microsoft-com:compatibility.v1"
+    xmlns:ws05="http://schemas.microsoft.com/SMI/2005/WindowsSettings"
+    xmlns:ws16="http://schemas.microsoft.com/SMI/2016/WindowsSettings"
+    xmlns:ws17="http://schemas.microsoft.com/SMI/2017/WindowsSettings">
+
+    <!--
+
+      //\\   OmenMon: Hardware Monitoring & Control Utility
+     //  \\  Copyright © 2023 Piotr Szczepański * License: GPL3
+         //  https://omenmon.github.io/
+
+    -->
+
+    <!-- Windows Version Compatibility -->
+    <c1:compatibility>
+        <c1:application>
+            <!-- Windows 10 & 11 -->
+            <c1:supportedOS Id="{8e0f7a12-bfb3-4fe8-b9a5-48fd50a15a9a}"/>
+        </c1:application>
+    </c1:compatibility>
+
+    <!-- Administrative Privilege Requirement -->
+    <a2:trustInfo>
+        <a2:security>
+            <a3:requestedPrivileges>
+                <a3:requestedExecutionLevel level="requireAdministrator" uiAccess="false" />
+            </a3:requestedPrivileges>
+        </a2:security>
+    </a2:trustInfo>
+
+    <!-- DPI Awareness -->
+    <a3:application>
+        <a3:windowsSettings>
+            <ws05:dpiAware>true</ws05:dpiAware>
+            <ws16:dpiAwareness>PerMonitorV2</ws16:dpiAwareness>
+            <ws17:gdiScaling>false</ws17:gdiScaling>
+        </a3:windowsSettings>
+    </a3:application>
+
+</a1:assembly>

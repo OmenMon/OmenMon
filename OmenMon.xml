@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<OmenMon>
+
+    <!--
+
+      //\\   OmenMon: Hardware Monitoring & Control Utility
+     //  \\  Configuration Settings XML File
+         //  https://omenmon.github.io/
+
+    -->
+
+    <!-- Note: comments under child nodes such as <ColorPresets> and <FanPrograms>
+         will be overwritten when the file is automatically generated upon save -->
+
+    <Config>
+
+        <!-- Automatically apply settings on start -->
+        <AutoConfig>true</AutoConfig>
+
+        <!-- Automatically start up with Windows -->
+        <AutoStartup>true</AutoStartup>
+
+        <!-- Ignore BIOS errors if false (for not fully compatible devices) -->
+        <BiosErrorReporting>true</BiosErrorReporting>
+
+        <!-- Color Backlight -->
+
+        <!-- Note: two default entries are hard-coded in the application
+             and will appear if there is nothing else to show instead -->
+        <ColorPresets>
+            <Preset Name="DefaultOem">0F84FA:710FFA:F9350F:FAAC0F</Preset>
+            <Preset Name="DefaultApp">0080FF:00FF00:00FF00:FFFFFF</Preset>
+            <Preset Name="All Amber">FF8800:FF8800:FF8800:FF8800</Preset>
+            <Preset Name="All White">FFFFFF:FFFFFF:FFFFFF:FFFFFF</Preset>
+            <Preset Name="Cyan Magenta Yellow">FFFF00:FF0080:3AE5E7:FFFF00</Preset>
+            <Preset Name="Red Green Blue">0000FF:00FF00:FF0000:FFFFFF</Preset>
+        </ColorPresets>
+
+        <!-- Embedded Controller -->
+
+        <!-- Maximum number of failed attempts waiting to read -->
+        <EcFailLimit>20</EcFailLimit>
+
+        <!-- Embedded Controller monitoring interval [ms]
+             (applies to command-line mode -EcMon context) -->
+        <EcMonInterval>200</EcMonInterval>
+
+        <!-- How long before bailing out trying to get a mutex [ms] -->
+        <EcMutexTimeout>200</EcMutexTimeout>
+
+        <!-- Maximum number of read or write attempts -->
+        <EcRetryLimit>5</EcRetryLimit>
+
+        <!-- Iterations before waiting fails each time -->
+        <EcWaitLimit>50</EcWaitLimit>
+
+        <!-- Fan Control -->
+
+        <!-- Fan countdown timer will be extended by this value [s] -->
+        <FanCountdownExtendInterval>120</FanCountdownExtendInterval>
+
+        <!-- Fan countdown extension threshold [s]
+             If the constant-speed button is selected (even if not
+             necessarily running at a constant-speed setting), the
+             fan countdown value will be extended when it reaches
+             less than the value for:
+             UpdateMonitorInterval + FanCountdownExtendThreshold
+             In fan program mode, the threshold is:
+             UpdateProgramInterval + FanCountdownExtendThreshold -->
+        <FanCountdownExtendThreshold>5</FanCountdownExtendThreshold>
+
+        <!-- Minimum and maximum fan level thresholds [krpm]
+             (for trackbar constant-speed level adjustment,
+             lowest setting will be interpreted as 0) -->
+        <FanLevelMax>55</FanLevelMax>
+        <FanLevelMin>20</FanLevelMin>
+
+        <!-- Default fan program, which might be loaded on startup
+             (depending on the Autoconfig setting) -->
+        <FanProgramDefault>None</FanProgramDefault>
+
+        <!-- Fan program definitions -->
+        <FanPrograms>
+            <Program Name="OEM Test">
+                <FanMode>Performance</FanMode>
+                <GpuPower>Maximum</GpuPower>
+                <Level Temperature="00"><Cpu>00</Cpu><Gpu>00</Gpu></Level>
+                <Level Temperature="21"><Cpu>21</Cpu><Gpu>00</Gpu></Level>
+                <Level Temperature="23"><Cpu>22</Cpu><Gpu>20</Gpu></Level>
+                <Level Temperature="25"><Cpu>24</Cpu><Gpu>22</Gpu></Level>
+                <Level Temperature="28"><Cpu>26</Cpu><Gpu>24</Gpu></Level>
+                <Level Temperature="30"><Cpu>27</Cpu><Gpu>25</Gpu></Level>
+                <Level Temperature="31"><Cpu>28</Cpu><Gpu>26</Gpu></Level>
+                <Level Temperature="33"><Cpu>29</Cpu><Gpu>31</Gpu></Level>
+                <Level Temperature="36"><Cpu>32</Cpu><Gpu>35</Gpu></Level>
+                <Level Temperature="40"><Cpu>37</Cpu><Gpu>39</Gpu></Level>
+                <Level Temperature="42"><Cpu>40</Cpu><Gpu>42</Gpu></Level>
+                <Level Temperature="45"><Cpu>45</Cpu><Gpu>47</Gpu></Level>
+                <Level Temperature="48"><Cpu>50</Cpu><Gpu>52</Gpu></Level>
+                <Level Temperature="50"><Cpu>55</Cpu><Gpu>57</Gpu></Level>
+            </Program>
+            <Program Name="Power">
+                <FanMode>Performance</FanMode>
+                <GpuPower>Maximum</GpuPower>
+                <Level Temperature="00"><Cpu>00</Cpu><Gpu>00</Gpu></Level>
+                <Level Temperature="35"><Cpu>21</Cpu><Gpu>00</Gpu></Level>
+                <Level Temperature="36"><Cpu>22</Cpu><Gpu>20</Gpu></Level>
+                <Level Temperature="38"><Cpu>24</Cpu><Gpu>22</Gpu></Level>
+                <Level Temperature="40"><Cpu>26</Cpu><Gpu>24</Gpu></Level>
+                <Level Temperature="45"><Cpu>27</Cpu><Gpu>25</Gpu></Level>
+                <Level Temperature="50"><Cpu>28</Cpu><Gpu>26</Gpu></Level>
+                <Level Temperature="55"><Cpu>29</Cpu><Gpu>31</Gpu></Level>
+                <Level Temperature="60"><Cpu>32</Cpu><Gpu>35</Gpu></Level>
+                <Level Temperature="65"><Cpu>37</Cpu><Gpu>39</Gpu></Level>
+                <Level Temperature="70"><Cpu>40</Cpu><Gpu>42</Gpu></Level>
+                <Level Temperature="75"><Cpu>45</Cpu><Gpu>47</Gpu></Level>
+                <Level Temperature="80"><Cpu>50</Cpu><Gpu>52</Gpu></Level>
+                <Level Temperature="85"><Cpu>55</Cpu><Gpu>57</Gpu></Level>
+            </Program>
+            <Program Name="Silent">
+                <FanMode>Default</FanMode>
+                <GpuPower>Minimum</GpuPower>
+                <Level Temperature="00"><Cpu>00</Cpu><Gpu>00</Gpu></Level>
+                <Level Temperature="60"><Cpu>21</Cpu><Gpu>23</Gpu></Level>
+                <Level Temperature="70"><Cpu>40</Cpu><Gpu>42</Gpu></Level>
+                <Level Temperature="80"><Cpu>50</Cpu><Gpu>52</Gpu></Level>
+                <Level Temperature="85"><Cpu>55</Cpu><Gpu>57</Gpu></Level>
+            </Program>
+        </FanPrograms>
+
+        <!-- GPU -->
+
+        <!-- Default GPU power settings, which might be loaded on startup
+             (depending on the Autoconfig setting) -->
+        <GpuPowerDefault>Maximum</GpuPowerDefault>
+
+        <!-- The wait before setting the GPU power for the 2nd time [ms]
+             (sometimes the settings do not take effect the first time,
+             so the command is sent twice but the second time only after
+             the specified period has passed) -->
+        <GpuPowerSetInterval>200</GpuPowerSetInterval>
+
+        <!-- Graphical User Interface -->
+
+        <!-- Whether closing the window closes the whole application -->
+        <GuiCloseWindowExit>false</GuiCloseWindowExit>
+
+        <!-- Whether to resize the main window if DPI changes -->
+        <GuiDpiChangeResize>false</GuiDpiChangeResize>
+
+        <!-- Whether to use a dynamic notification icon by default
+             (icon text shows current temperature) -->
+        <GuiDynamicIcon>true</GuiDynamicIcon>
+
+        <!-- Whether the dynamic icon has a dynamic background or not
+             (background is warm in performance mode, cool otherwise) -->
+        <GuiDynamicIconHasBackground>true</GuiDynamicIconHasBackground>
+
+        <!-- Whether the main window stays on top of all other windows -->
+        <GuiStayOnTop>false</GuiStayOnTop>
+
+        <!-- Override System Information font size (leave 0 for the default) -->
+        <GuiSysInfoFontSize>0</GuiSysInfoFontSize>
+
+        <!-- How long to show a tip in the notification area for [ms]
+             (0 to disable entirely; the default setting of 30000, or 30 s,
+              is scaled down to a couple of seconds by the operating system) -->
+        <GuiTipDuration>30000</GuiTipDuration>
+
+        <!-- Omen Key -->
+
+        <!-- Custom Omen key action -->
+        <KeyCustomAction>
+            <Enabled>false</Enabled>
+            <!-- This example command will turn off the display
+                 and keyboard backlight while the laptop keeps running -->
+            <ExecCmd>cmd.exe</ExecCmd>
+            <ExecArgs>/c start /min "" powershell -WindowStyle Hidden (Add-Type '[DllImport(\"user32.dll\")] public static extern int SendMessage(int hWnd, int hMsg, int wParam, int lParam);' -Name User32 -PassThru)::SendMessage(-1, 0x0112, 0xF170, 2) ^| Out-Null</ExecArgs>
+            <Minimized>true</Minimized>
+        </KeyCustomAction>
+
+        <!-- If the application window is already shown on screen,
+             and custom action is disabled, subsequent Omen key
+             presses toggle the default fan program on and off -->
+        <KeyToggleFanProgram>true</KeyToggleFanProgram>
+
+        <!-- Preset Settings -->
+
+        <!-- High display refresh rate preset value [Hz] -->
+        <PresetRefreshRateHigh>165</PresetRefreshRateHigh>
+
+        <!-- Standard display refresh rate preset value [Hz] -->
+        <PresetRefreshRateLow>60</PresetRefreshRateLow>
+
+        <!-- Update Interval -->
+
+        <!-- How often the dynamic notification icon is updated [s] -->
+        <UpdateIconInterval>1</UpdateIconInterval>
+
+        <!-- How often the monitoring data on the main form is updated [s] -->
+        <UpdateMonitorInterval>1</UpdateMonitorInterval>
+
+        <!-- How often the fan program is updated (if running) [s] -->
+        <UpdateProgramInterval>30</UpdateProgramInterval>
+
+    </Config>
+
+    <!-- Localizable Messages -->
+
+    <!-- Any of the application's messages can be redefined,
+         for example translated to another language -->
+
+    <Messages>
+
+        <!-- The following two strings will optionally show translator credit
+             (these are empty by default, and nothing is shown) -->
+
+        <!-- <String Key="CliTranslated">Translated to [Language] by [Author]</String> -->
+        <!-- <String Key="GuiTranslated">Translated by [Author]</String> -->
+
+    </Messages>
+
+</OmenMon>

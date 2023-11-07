@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+
+  //\\   OmenMon: Hardware Monitoring & Control Utility
+ //  \\  Copyright © 2023 Piotr Szczepański * License: GPL3
+     //  https://omenmon.github.io/
+
+-->
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <!-- <AllowUnsafeBlocks>true</AllowUnsafeBlocks> -->
+        <ApplicationIcon>Resources\Icon.ico</ApplicationIcon>
+        <ApplicationManifest>OmenMon.manifest</ApplicationManifest>
+        <AssemblyName>OmenMon</AssemblyName>
+        <AssemblyVersionFile>All\Version.cs</AssemblyVersionFile>
+        <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+        <Configuration Condition=" '$(Configuration)' == '' ">Release</Configuration>
+        <CoreCompileDependsOn>PrepareResources;$(CompileDependsOn)</CoreCompileDependsOn>
+        <Deterministic>true</Deterministic>
+        <DisableWinExeOutputInference>true</DisableWinExeOutputInference>
+        <ErrorReport>prompt</ErrorReport>
+        <IntermediateOutputPath>Obj</IntermediateOutputPath>
+        <LangVersion>11.0</LangVersion>
+        <OutputPath>Bin</OutputPath>
+        <OutputType>WinExe</OutputType>
+        <Platform>x64</Platform>
+        <PlatformTarget>x64</PlatformTarget>
+        <ProjectGuid>{F6104868-81A7-4D09-8AD2-8CF261D58319}</ProjectGuid>
+        <RootNamespace>OmenMon</RootNamespace>
+        <StartupObject>OmenMon.App</StartupObject>
+        <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <DebugSymbols>true</DebugSymbols>
+        <DefineDebug>true</DefineDebug>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <DebugSymbols>false</DebugSymbols>
+        <Optimize>true</Optimize>
+    </PropertyGroup>
+    <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets"/>
+    <ItemGroup>
+        <None Include="OmenMon.config"/>
+        <None Include="OmenMon.manifest"/>
+        <None Include="Packages.config"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="$(AssemblyVersionFile)"/>
+        <Compile Include="All\Meta.cs"/>
+        <Compile Include="App\App.cs"/>
+        <Compile Include="App\Cli\Cli.cs"/>
+        <Compile Include="App\Cli\CliBios.cs"/>
+        <Compile Include="App\Cli\CliEc.cs"/>
+        <Compile Include="App\Cli\CliProg.cs"/>
+        <Compile Include="App\Cli\CliTask.cs"/>
+        <Compile Include="App\Cli\CliOp.cs"/>
+        <Compile Include="App\Cli\CliOpBios.cs"/>
+        <Compile Include="App\Cli\CliOpEc.cs"/>
+        <Compile Include="App\Cli\CliOpProg.cs"/>
+        <Compile Include="App\Cli\CliOpTask.cs"/>
+        <Compile Include="App\Gui\Gui.cs"/>
+        <Compile Include="App\Gui\GuiOp.cs"/>
+        <Compile Include="App\Gui\GuiFilter.cs"/>
+        <Compile Include="App\Gui\GuiFormAbout.cs"/>
+        <Compile Include="App\Gui\GuiFormMain.cs"/>
+        <Compile Include="App\Gui\GuiFormMainInit.cs"/>
+        <Compile Include="App\Gui\GuiIcon.cs"/>
+        <Compile Include="App\Gui\GuiMenu.cs"/>
+        <Compile Include="App\Gui\GuiKbd.cs"/>
+        <Compile Include="App\Gui\GuiTray.cs"/>
+        <Compile Include="Driver\Driver.cs"/>
+        <Compile Include="Driver\Ring0.cs"/>
+        <Compile Include="External\AdvApi.cs"/>
+        <Compile Include="External\ColorMgmt.cs"/>
+        <Compile Include="External\Gdi.cs"/>
+        <Compile Include="External\Kernel.cs"/>
+        <Compile Include="External\ShellCore.cs"/>
+        <Compile Include="External\TaskSchd.cs"/>
+        <Compile Include="External\User.cs"/>
+        <Compile Include="External\WinBase.cs"/>
+        <Compile Include="Hardware\Bios.cs"/>
+        <Compile Include="Hardware\BiosCtl.cs"/>
+        <Compile Include="Hardware\BiosData.cs"/>
+        <Compile Include="Hardware\Ec.cs"/>
+        <Compile Include="Hardware\EcData.cs"/>
+        <Compile Include="Hardware\EcMutex.cs"/>
+        <Compile Include="Hardware\Fan.cs"/>
+        <Compile Include="Hardware\FanArray.cs"/>
+        <Compile Include="Hardware\FanProgram.cs"/>
+        <Compile Include="Hardware\Platform.cs"/>
+        <Compile Include="Hardware\PlatformComponent.cs"/>
+        <Compile Include="Hardware\PlatformData.cs"/>
+        <Compile Include="Hardware\Settings.cs"/>
+        <Compile Include="Library\Config.cs"/>
+        <Compile Include="Library\ConfigData.cs"/>
+        <Compile Include="Library\Conv.cs"/>
+        <Compile Include="Library\Gui\ButtonEx.cs"/>
+        <Compile Include="Library\Gui\GdiFont.cs"/>
+        <Compile Include="Library\Gui\ColorDlgEx.cs"/>
+        <Compile Include="Library\Gui\ProgressBarEx.cs"/>
+        <Compile Include="Library\Hw.cs"/>
+        <Compile Include="Library\Locale.cs"/>
+        <Compile Include="Library\LocaleData.cs"/>
+        <Compile Include="Library\OnlyOnce.cs"/>
+        <Compile Include="Library\Os.cs"/>
+        <Compile Include="Library\WmiEvent.cs"/>
+        <Compile Include="Library\WmiInfo.cs"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Reference Include="Microsoft.CSharp"/>
+        <Reference Include="Microsoft.Management.Infrastructure"/>
+        <Reference Include="System"/>
+        <Reference Include="System.Drawing"/>
+        <Reference Include="System.Windows.Forms"/>
+        <Reference Include="System.Xml"/>
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="OmenMon.resx">
+            <Generator>MSBuild:Compile</Generator>
+            <LastGenOutput>$(IntermediateOutputPath)Resources.cs</LastGenOutput>
+            <LogicalName>OmenMon.Resources.resources</LogicalName>
+            <StronglyTypedFileName>$(IntermediateOutputPath)Resources.cs</StronglyTypedFileName>
+            <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
+            <StronglyTypedNamespace>OmenMon</StronglyTypedNamespace>
+            <StronglyTypedClassName>Resources</StronglyTypedClassName>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Resources\Driver.sys.gz">
+            <LogicalName>OmenMon.Driver.sys.gz</LogicalName>
+        </EmbeddedResource>
+    </ItemGroup>
+    <!-- <ItemGroup>
+        <ProjectReference Include="Driver.csproj">
+            <Project>{10ADAB1E-11B1-ABE1-5ACC-E551B1EAB0DE}</Project>
+            <Name>Driver</Name>
+        </ProjectReference>
+    </ItemGroup> -->
+    <Target Name="AddVersion" BeforeTargets="CoreCompile" Condition="'$(AssemblyVersion)'!='' And '$(AssemblyVersionWord)'!=''">
+        <Error
+            Condition="'$([System.Text.RegularExpressions.Regex]::IsMatch(&quot;$(AssemblyVersion)&quot;, &quot;^\d+\.\d+\.\d+\.\d+$&quot;))' == false" 
+            Text="Assembly version must consist of exactly four positive integers separated by dots"/>
+        <Message Text="Assembly Version: $(AssemblyVersion)-$(AssemblyVersionWord)" />
+        <ReadLinesFromFile File="$(AssemblyVersionFile)">
+            <Output TaskParameter="Lines" ItemName="AssemblyVersionLines" />
+        </ReadLinesFromFile>
+        <ItemGroup>
+            <GeneratedVersionLines Include="@(AssemblyVersionLines)" Condition="'$([System.Text.RegularExpressions.Regex]::IsMatch(&quot;%(Identity)&quot;, &quot;(?i)Assembly((File|Informational)?Version|Metadata)&quot;))' == false" />
+            <GeneratedVersionLines Include="[assembly: AssemblyVersion(&quot;$([System.Text.RegularExpressions.Regex]::Match($(AssemblyVersion), `\d+\.\d+\.\d+`))&quot;)]" />
+            <GeneratedVersionLines Include="[assembly: AssemblyFileVersion(&quot;$(AssemblyVersion)&quot;)]" />
+            <GeneratedVersionLines Include="[assembly: AssemblyInformationalVersion(&quot;$([System.Text.RegularExpressions.Regex]::Match($(AssemblyVersion), `\d+\.\d+`))-$(AssemblyVersionWord)&quot;)]" />
+            <GeneratedVersionLines Include="[assembly: AssemblyMetadata(&quot;Timestamp&quot;, &quot;$([System.DateTime]::Now.ToString('yyyy-MM-dd HH:mm'))&quot;)]" />
+        </ItemGroup>
+        <WriteLinesToFile File="$(IntermediateOutputPath)Version.cs" Lines="@(GeneratedVersionLines)" Overwrite="true" />
+        <ItemGroup>
+            <Compile Remove="$(AssemblyVersionFile)" />
+            <Compile Include="$(IntermediateOutputPath)Version.cs" />
+        </ItemGroup>
+    </Target>
+    <Target Name="BuildBeginning" BeforeTargets="BeforeBuild">
+    </Target>
+    <Target Name="BuildComplete" AfterTargets="AfterBuild">
+        <Copy SourceFiles="OmenMon.xml" DestinationFolder="$(OutDir)" />
+        <!-- <Exec Command="robocopy /nc /ndl /nfl /njh /njs /np /ns /r:2 /w:5 Bin \\Momentum\Exchange\ OmenMon.*" IgnoreExitCode="true" /> -->
+    </Target>
+    <Target Name="DeleteDirs" AfterTargets="Clean">
+        <RemoveDir Directories="$(IntermediateOutputPath)" />
+        <RemoveDir Directories="$(OutputPath)" />
+    </Target>
+</Project>

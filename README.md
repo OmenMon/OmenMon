@@ -1,6 +1,6 @@
 # OmenMon
 
-<p align="center"><a href="https://omenmon.github.io/">Project Page &amp; Documentation</a> • <a href="https://omenmon.github.io/build">Building Instructions</a> • <a href="https://github.com/OmenMon/Localization">Translation Repository</a> • <a href="https://github.com/OmenMon/OmenMon/releases/latest">Download Latest Release ⭳</a></p>
+<p align="center"><a href="https://omenmon.github.io/">Project Page &amp; Documentation</a> • <a href="https://omenmon.github.io/build">How to Build</a> • <a href="https://omenmon.github.io/build#history">Version History</a> • <a href="https://github.com/OmenMon/Localization">Translations</a> • <a href="https://github.com/OmenMon/OmenMon/releases/latest">Download ⭳</a></p>
 
 ![OmenMon graphical mode overview](https://omenmon.github.io/pic/gui-overview.png)
 
@@ -12,38 +12,12 @@
 
 Most features are specific to _HP_ devices with a compatible BIOS interface exposed by the `ACPI\PNP0C14` driver but command-line [Embedded Controller operations](https://omenmon.github.io/cli#ec) should work on all laptops.
 
-Full documentation is available at [https://omenmon.github.io/](https://omenmon.github.io/)
+## License
+
+**OmenMon** Copyright © 2023 [Piotr Szczepański](https://piotr.szczepanski.name/)
+
+This application is _free software_: you can redistribute it and/or modify it under the terms of the [GNU General Public License Version 3](https://www.gnu.org/licenses/gpl-3.0.html#license-text) as published by the [Free Software Foundation](https://www.fsf.org/). The full text of the license is available as `LICENSE.md` in this repository or on the [Web page](https://omenmon.github.io/more#license).
+
+**OmenMon** builds upon the work of several other projects. Please see the [acknowledgements](https://omenmon.github.io/more#acknowledgements) for details.
 
 _This software is not affiliated with or endorsed by HP. Any brand names are used for informational purposes only._
-
-## Version History
-
-### 0.54 (2023-11-06)
-
-  * Make platform fan and temperature array setup model-dependent
-  * Make BIOS calls to retrieve GPU mode not raise an exception on unsupported models, hide the menu items related to GPU mode in such scenarios
-  * Add `GuiDpiChangeResize` configuration option to set whether the window should be automatically resized in response to DPI changes
-  * Add `GuiSysInfoFontSize` configuration option to override the font size used for _System Information & Status_
-
-### 0.53 (2023-11-06)
-
-  * Update missing localization string for _Unknown_ throttling status (introduced in 0.51)
-
-### 0.52 (2023-11-05)
-
-  * Fix `DynamicIcon` and `DynamicIconHasBackground` configuration settings not being saved
-  * Resolve the issue when unless the main window is being shown, temperature sensors are not updated before calculating maximum temperature. Thank you to **[@wangzhengbin](https://github.com/wangzhengbin)** for reporting this issue.
-
-### 0.51 (2023-11-05)
-
-  * Resolve the issue when a BIOS call to check throttling status results in an unhandled exception where not supported. The call is not supported on 2023 models where it yields BIOS error code 6. The status will now be reported as _Unknown_ in these scenarios. Thank you to **[@breadeding](https://github.com/breadeding)** for contributing information that made it possible to fix this issue.
-  * Main window title consistency fix
-
-### 0.50 (2023-11-04)
-
-  * Initial public preview
-  * Publish a complete documentation at [omenmon.github.io](https://omenmon.github.io/)
-  * Publish an XML translation template at [github.com/OmenMon/Localization](https://github.com/OmenMon/Localization)
-  * Detect _PowerShell_ console to workaround output issues
-
-**OmenMon** is feature-complete and fully works on the _HP Omen_ `8A14` (`Ralph 22C1` or _Omen 16_) platform I can test it with on Windows 10 `21H2` (`10.0.19044`). Since all the functionality is very hardware-specific, there might be issues on other platforms different from the one I have, which will have to be ironed out. Thus, only a preview release for now but it _should_ fully work – as long as your laptop is similar enough to mine.
