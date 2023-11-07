@@ -1,0 +1,85 @@
+#  //\\   OmenMon: Hardware Monitoring & Control Utility
+# //  \\  Copyright © 2023 Piotr Szczepański * License: GPL3
+#     //  https://omenmon.github.io/
+#
+#
+# OmenMon Build Workflow
+
+name: "OmenMon"
+run-name: "OmenMon"
+
+env:
+  RESOURCES_DIR: "Resources"
+  RESOURCES_REPO: "OmenMon\Resources"
+  SOLUTION_FILE: "OmenMon.sln"
+
+on:
+  workflow_call:
+    inputs:
+      version_number:
+        description: "Version number for the build, must consist of exactly four positive integers separated by dots"
+        default: "0.0.0.0"
+        required: false
+        type: string
+      version_word:
+        description: "Version word indicating build type"
+        default: "Manual"
+        required: false
+        type: string
+
+  workflow_dispatch:
+    inputs:
+      version_number:
+        description: "Version number for the build, must consist of exactly four positive integers separated by dots"
+        default: "0.0.0.0"
+        required: false
+        type: string
+      version_word:
+        description: "Version word indicating build type"
+        default: "Manual"
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  Build-OmenMon:
+    name: "Build OmenMon"
+    runs-on: windows-2022
+
+    strategy:
+      matrix:
+        configuration: ["Release"]
+
+    steps:
+    - name: "Retrieve OmenMon"
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 1
+
+    - name: "Retrieve OmenMon Resources"
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 1
+        path: ${{ env.RESOURCES_DIR }}
+        repository: ${{ env.RESOURCES_REPO }}
+
+    - name: "Set up Microsoft Build"
+      uses: microsoft/setup-msbuild@v1.1
+      with:
+        msbuild-architecture: x64
+        vs-version: "[17.7,)"
+
+    - name: "Build the Solution"
+      working-directory: ${{ github.workspace }}
+      run: >
+        msbuild -m -noLogo -p:AssemblyVersion=${{inputs.version_number}} -p:AssemblyVersionWord=${{inputs.version_word}}
+            -p:Configuration=${{matrix.configuration}} -t:Build ${{env.SOLUTION_FILE}}
+
+    - name: "Upload Build Artifacts"
+      uses: actions/upload-artifact@v3
+      with:
+        if-no-files-found: error
+        name: "OmenMon"
+        path: "Bin"
