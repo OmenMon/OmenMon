@@ -9,10 +9,6 @@
 name: "OmenMon Build"
 run-name: "OmenMon Build by ${{ github.actor }}"
 
-concurrency:
-  group: ${{ github.ref }}
-  #cancel-in-progress: true
-
 on:
   workflow_call:
     inputs:
@@ -23,7 +19,7 @@ on:
         type: string
       version_word:
         description: "Version word indicating build type"
-        default: "Workflow-C"
+        default: "GitHub-C"
         required: false
         type: string
 
@@ -36,7 +32,7 @@ on:
         type: string
       version_word:
         description: "Version word indicating build type"
-        default: "Workflow-D"
+        default: "GitHub-D"
         required: false
         type: string
 
@@ -51,6 +47,7 @@ jobs:
 
   Build-OmenMon:
     name: "Build OmenMon"
+    needs: Call-Bump-Build
     runs-on: windows-2022
 
     strategy:
