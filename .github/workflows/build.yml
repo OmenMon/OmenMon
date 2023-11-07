@@ -41,7 +41,7 @@ permissions:
 
 jobs:
   Call-Bump-Build:
-    name: "Call Bump up Build Number"
+    name: "Call Bump"
     secrets: inherit
     uses: ./.github/workflows/build_bump.yml
 
@@ -55,12 +55,12 @@ jobs:
         configuration: ["Release"]
 
     steps:
-    - name: "Retrieve OmenMon"
+    - name: "Checkout OmenMon"
       uses: actions/checkout@v4
       with:
         fetch-depth: 1
 
-    - name: "Retrieve OmenMon Resources"
+    - name: "Checkout OmenMon Resources"
       uses: actions/checkout@v4
       with:
         fetch-depth: 1
