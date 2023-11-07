@@ -4,7 +4,7 @@
 #     //  https://omenmon.github.io/
 #
 # OmenMon Build Bump Workflow
-# Bumps up the build number stored in a variable
+# Bumps up the build number stored in a repository variable
 
 name: "OmenMon Build Bump"
 run-name: "OmenMon Build Bump by ${{ github.actor }}"
@@ -16,30 +16,26 @@ on:
         description: "A token that allows writing repository variables"
         required: true
   workflow_dispatch:
-    secrets:
-      VARIABLE_WRITE_TOKEN:
-        description: "A token that allows writing repository variables"
-        required: true
 
 permissions: {}
 
 jobs:
   Bump-Build:
     name: "Bump up Build Number"
-    runs-on: windows-2022
+    runs-on: windows-latest
 
     steps:
-    - name: "Increment and Store the Build Number"
+    - name: "Increment and Store the Number in the Environment"
       run: >
         echo "BUILD_NUMBER=$(${{ vars.BUILD_NUMBER }} + 1)" >> $env:GITHUB_ENV
       shell: pwsh
 
-    - name: "Call REST API"
+    - name: "Call REST API to Update Repository Variable"
       run: >
         curl -L
         -X PATCH
         -H "Accept: application/vnd.github+json"
         -H "Authorization: Bearer ${{ secrets.VARIABLE_WRITE_TOKEN }}"
         -H "X-GitHub-Api-Version: 2022-11-28"
-        -d {"name":"BUILD_NUMBER","value":"${{ env.BUILD_NUMBER }}"}
+        -d '{\"name\":\"BUILD_NUMBER\",\"value\":\"${{ env.BUILD_NUMBER }}\"}'
         https://api.github.com/repos/OmenMon/OmenMon/actions/variables/BUILD_NUMBER
