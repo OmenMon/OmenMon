@@ -21,16 +21,16 @@ permissions: {}
 
 jobs:
   Bump-Build:
-    name: "Bump up Build Number"
+    name: "Bump up Build"
     runs-on: windows-latest
 
     steps:
-    - name: "Increment and Store the Number in the Environment"
+    - name: "Increment and Store Build Number in the Environment"
       run: >
         echo "BUILD_NUMBER=$(${{ vars.BUILD_NUMBER }} + 1)" >> $env:GITHUB_ENV
       shell: pwsh
 
-    - name: "Call REST API to Update Repository Variable"
+    - name: "Call the REST API to Update Repository Variable"
       run: >
         curl -L
         -X PATCH
