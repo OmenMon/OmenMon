@@ -40,14 +40,14 @@ permissions:
   contents: read
 
 jobs:
-  Call-Bump-Build:
+  call-bump:
     name: "Call Bump"
     secrets: inherit
     uses: ./.github/workflows/build_bump.yml
 
-  Build-OmenMon:
+  build:
     name: "Build OmenMon"
-    needs: Call-Bump-Build
+    needs: call-bump
     runs-on: windows-2022
 
     strategy:
