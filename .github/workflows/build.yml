@@ -13,28 +13,35 @@ on:
   workflow_call:
     inputs:
       version_number:
-        description: "Version number for the build, must consist of exactly three positive integers separated by dots"
+        description: "Version number: three dot-separated non-negative integers [0.0.0]"
         default: "0.0.0"
         required: false
         type: string
       version_word:
-        description: "Version word indicating build type"
-        default: "GitHub-C"
-        required: false
-        type: string
+        description: "Version word: build type (Preview, Release, Snapshot)"
+        required: true
+        type: choice
+        options:
+          - "Preview"
+          - "Release"
+          - "Snapshot"
 
   workflow_dispatch:
     inputs:
       version_number:
-        description: "Version number for the build, must consist of exactly three positive integers separated by dots"
+        description: "Version number: three dot-separated non-negative integers [0.0.0]"
         default: "0.0.0"
         required: false
         type: string
       version_word:
-        description: "Version word indicating build type"
-        default: "GitHub-D"
-        required: false
-        type: string
+        description: "Version word: build type [Snapshot]"
+        default: "Snapshot"
+        required: true
+        type: choice
+        options:
+          - "Preview"
+          - "Release"
+          - "Snapshot"
 
 permissions:
   contents: read
