@@ -53,6 +53,7 @@ namespace OmenMon.Hardware.Platform {
                 case "?": // Default
                 case "8A13":
                 case "8A14":
+                default:
 
                     this.Fans = new FanArray(
                         new IFan[] {
@@ -131,6 +132,7 @@ namespace OmenMon.Hardware.Platform {
                 case "?": // Default
                 case "8A13":
                 case "8A14":
+                default:
                     this.Temperature = new IPlatformReadComponent[TEMPERATURE_COUNT];
                     this.Temperature[0] = new EcComponent((byte) EmbeddedControllerData.Register.CPUT, Config.MaxBelievableTemperature);
                     this.Temperature[1] = new EcComponent((byte) EmbeddedControllerData.Register.GPTM, Config.MaxBelievableTemperature);
@@ -142,6 +144,7 @@ namespace OmenMon.Hardware.Platform {
                     this.Temperature[7] = new EcComponent((byte) EmbeddedControllerData.Register.TNT4, Config.MaxBelievableTemperature);
                     this.Temperature[8] = new EcComponent((byte) EmbeddedControllerData.Register.TNT5, Config.MaxBelievableTemperature);
                     break;
+
             }
 
         }
