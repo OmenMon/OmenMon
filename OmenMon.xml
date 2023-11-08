@@ -182,7 +182,7 @@
         <!-- If the application window is already shown on screen,
              and custom action is disabled, subsequent Omen key
              presses toggle the default fan program on and off -->
-        <KeyToggleFanProgram>true</KeyToggleFanProgram>
+        <KeyToggleFanProgram>false</KeyToggleFanProgram>
 
         <!-- Preset Settings -->
 
