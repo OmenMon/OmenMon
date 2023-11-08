@@ -46,22 +46,22 @@ jobs:
     - name: "Create Archive Comment"
       run: |
         cat >OmenMon.zip.txt <<EOF
-        OmenMon: Hardware Monitoring & Control Utility
-        Version ${{ needs.call-build.output.version_number }}-${{ needs.call-build.output.version_word }} Build ${{ vars.BUILD_NUMBER }}
-        Timestamp: $(date -u +"%Y-%m-%d %H:%M") (UTC)
-
-        https://omenmon.github.io/
+        @ (zip file comment below this line)
+          //\\\\   OmenMon Version ${{ github.event.release.tag_name }}-${{ github.event.release.prerelease && 'Preview' || 'Release' }}
+         //  \\\\  Build ${{ vars.BUILD_NUMBER }} * $(date -u +"%Y-%m-%d %H:%M") UTC
+             //  https://omenmon.github.io/
         EOF
 
     - name: "Add Comment to Archive"
-      run: zipnote -w OmenMon.zip < OmenMon.zip.txt
+      run: zipnote -b . -w OmenMon.zip < OmenMon.zip.txt
 
-    - name: "Upload OmenMon Assets"
+    - if: success() || failure()
+      name: "Upload OmenMon Assets"
       uses: actions/upload-release-asset@v1
       with:
         upload_url: ${{ github.event.release.upload_url }}
         asset_path: ./OmenMon.zip
-        asset_name: OmenMon-${{ needs.call-build.output.version_number }}-${{ needs.call-build.output.version_word }}.zip
+        asset_name: OmenMon-${{ github.event.release.tag_name }}-${{ github.event.release.prerelease && 'Preview' || 'Release' }}.zip
         asset_content_type: application/zip
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
