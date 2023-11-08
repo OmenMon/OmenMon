@@ -20,13 +20,21 @@ env:
   RELEASE_WORD: ${{ github.event.release.prerelease && 'Preview' || 'Release' }}
 
 jobs:
+  Setup-Build:
+    name: "Set up Build Parameters"
+    runs-on: ubuntu-latest
+    outputs:
+      version_number: ${{ github.event.release.tag_name }}
+      version_word: ${{ env.RELEASE_WORD }}
+
   Call-Build:
     name: "Call Build"
+    needs: Setup-Build
     secrets: inherit
     uses: ./.github/workflows/build.yml
     with:
-      version_number: ${{ github.event.release.tag_name }}
-      version_word: ${{ env.RELEASE_WORD }}
+      version_number: $${ needs.Setup-Build.output.version_number }}
+      version_word: ${{ needs.Setup-Build.output.version_word }}
 
   Release-OmenMon:
     name: "Release OmenMon"
