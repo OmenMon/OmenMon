@@ -1,0 +1,54 @@
+#
+#  //\\   OmenMon: Hardware Monitoring & Control Utility
+# //  \\  Copyright © 2023 Piotr Szczepański * License: GPL3
+#     //  https://omenmon.github.io/
+#
+# OmenMon Release Workflow
+# Triggers a build and uploads artifacts as release assets
+
+name: "OmenMon Release"
+run-name: "OmenMon Release by ${{ github.actor }}"
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+env:
+  RELEASE_WORD: ${{ github.event.release.prerelease && "Preview" || "Release" }}
+
+jobs:
+  Call-Build:
+    name: "Call Build"
+    secrets: inherit
+    uses: ./.github/workflows/build.yml
+    with:
+      version_number: ${{ github.event.release.tag_name }}
+      version_word: ${{ env.RELEASE_WORD }}
+
+  Release-OmenMon:
+    name: "Release OmenMon"
+    needs: Call-Build
+    runs-on: ubuntu-latest
+
+    steps:
+    - id: download
+      name: "Download OmenMon Artifact"
+      uses: actions/download-artifact@v3
+      with:
+        name: "OmenMon"
+
+    - name: 'Show Download Path'
+      run: echo ${{steps.download.outputs.download-path}}
+
+    - name: "Upload OmenMon Asset"
+      uses: actions/upload-release-asset@v1
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ./OmenMon.zip
+        asset_name: OmenMon.zip
+        asset_content_type: application/zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
