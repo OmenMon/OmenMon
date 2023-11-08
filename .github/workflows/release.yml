@@ -16,29 +16,29 @@ on:
 permissions:
   contents: write
 
-env:
-  RELEASE_WORD: ${{ github.event.release.prerelease && 'Preview' || 'Release' }}
-
 jobs:
-  Setup-Build:
-    name: "Set up Build Parameters"
+  setup:
+    name: "Set up Build Metadata"
     runs-on: ubuntu-latest
     outputs:
       version_number: ${{ github.event.release.tag_name }}
-      version_word: ${{ env.RELEASE_WORD }}
+      version_word: ${{ github.event.release.prerelease && 'Preview' || 'Release' }}
+    steps:
+    - name: "Dummy Operation"
+      run: echo Completed
 
-  Call-Build:
+  call-build:
     name: "Call Build"
-    needs: Setup-Build
+    needs: setup
     secrets: inherit
     uses: ./.github/workflows/build.yml
     with:
-      version_number: $${ needs.Setup-Build.output.version_number }}
-      version_word: ${{ needs.Setup-Build.output.version_word }}
+      version_number: $${ needs.setup.output.version_number }}
+      version_word: ${{ needs.setup.output.version_word }}
 
-  Release-OmenMon:
+  release:
     name: "Release OmenMon"
-    needs: Call-Build
+    needs: call-build
     runs-on: ubuntu-latest
 
     steps:
@@ -49,7 +49,10 @@ jobs:
         name: "OmenMon"
 
     - name: 'Show Download Path'
-      run: echo ${{steps.download.outputs.download-path}}
+      run: echo ${{ steps.download.outputs.download-path }}
+
+    - name: 'List Downloaded Artifacts'
+      run: ls -laR ${{ steps.download.outputs.download-path }}
 
     - name: "Upload OmenMon Asset"
       uses: actions/upload-release-asset@v1
