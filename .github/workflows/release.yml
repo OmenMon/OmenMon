@@ -38,7 +38,7 @@ jobs:
         name: ${{ github.event.repository.name }}
 
     - name: 'List Artifacts'
-      run: ls -laR ${{ steps.download.outputs.download-path }}
+      run: ls -1R ${{ steps.download.outputs.download-path }}
 
     - name: "Create Archive"
       run: zip -9 -r OmenMon.zip ./*
@@ -47,16 +47,15 @@ jobs:
       run: |
         cat >OmenMon.zip.txt <<EOF
         @ (zip file comment below this line)
-          //\\\\   OmenMon Version ${{ github.event.release.tag_name }}-${{ github.event.release.prerelease && 'Preview' || 'Release' }}
-         //  \\\\  Build ${{ vars.BUILD_NUMBER }} * $(date -u +"%Y-%m-%d %H:%M") UTC
+          //\\\\\\\\   OmenMon Version ${{ github.event.release.tag_name }}-${{ github.event.release.prerelease && 'Preview' || 'Release' }}
+         //  \\\\\\\\  Build ${{ vars.BUILD_NUMBER }} * $(date -u +"%Y-%m-%d %H:%M") UTC
              //  https://omenmon.github.io/
         EOF
 
     - name: "Add Comment to Archive"
       run: zipnote -b . -w OmenMon.zip < OmenMon.zip.txt
 
-    - if: success() || failure()
-      name: "Upload OmenMon Assets"
+    - name: "Upload OmenMon Assets"
       uses: actions/upload-release-asset@v1
       with:
         upload_url: ${{ github.event.release.upload_url }}
