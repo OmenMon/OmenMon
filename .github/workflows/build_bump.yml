@@ -31,5 +31,5 @@ jobs:
         -H "Accept: application/vnd.github+json"
         -H "Authorization: Bearer ${{ secrets.VARIABLE_WRITE_TOKEN }}"
         -H "X-GitHub-Api-Version: 2022-11-28"
-        -d "{\"name\":\"BUILD_NUMBER\",\"value\":\"$((${{ vars.BUILD_NUMBER }} + 1))\"}"
+        -d "{\"name\":\"BUILD_NUMBER\",\"value\":\"\$((${{ vars.BUILD_NUMBER }} + 1))\"}"
         https://api.github.com/repos/OmenMon/OmenMon/actions/variables/BUILD_NUMBER
