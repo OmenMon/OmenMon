@@ -140,7 +140,7 @@
     <Target Name="AddVersion" BeforeTargets="CoreCompile" Condition="'$(AssemblyVersion)'!='' And '$(AssemblyVersionWord)'!=''">
         <Error
             Condition="'$([System.Text.RegularExpressions.Regex]::IsMatch(&quot;$(AssemblyVersion)&quot;, &quot;^\d+\.\d+\.\d+\.\d+$&quot;))' == false" 
-            Text="Assembly version must consist of exactly four positive integers separated by dots"/>
+            Text="Assembly version must consist of exactly four non-negative integers separated by dots"/>
         <Message Text="Assembly Version: $(AssemblyVersion)-$(AssemblyVersionWord)" />
         <ReadLinesFromFile File="$(AssemblyVersionFile)">
             <Output TaskParameter="Lines" ItemName="AssemblyVersionLines" />
