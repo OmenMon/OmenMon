@@ -22,20 +22,14 @@ permissions: {}
 jobs:
   bump:
     name: "Bump up Build"
-    runs-on: windows-2022
+    runs-on: ubuntu-latest
 
-    steps:
-    - name: "Increment and Store Build Number in the Environment"
-      run: >
-        echo "BUILD_NUMBER=$(${{ vars.BUILD_NUMBER }} + 1)" >> $env:GITHUB_ENV
-      shell: pwsh
-
-    - name: "Call the REST API to Update Repository Variable"
+    - name: "Increment Build Number & Call the REST API to Update Repository Variable"
       run: >
         curl -L
         -X PATCH
         -H "Accept: application/vnd.github+json"
         -H "Authorization: Bearer ${{ secrets.VARIABLE_WRITE_TOKEN }}"
         -H "X-GitHub-Api-Version: 2022-11-28"
-        -d '{\"name\":\"BUILD_NUMBER\",\"value\":\"${{ env.BUILD_NUMBER }}\"}'
+        -d "{\"name\":\"BUILD_NUMBER\",\"value\":\"$((${{ vars.BUILD_NUMBER }} + 1))\"}"
         https://api.github.com/repos/OmenMon/OmenMon/actions/variables/BUILD_NUMBER
