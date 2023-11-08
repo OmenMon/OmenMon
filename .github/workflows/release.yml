@@ -47,8 +47,8 @@ jobs:
       uses: actions/upload-release-asset@v1
       with:
         upload_url: ${{ github.event.release.upload_url }}
-        asset_path: ./${{ RELEASE_FILE_APP }}
-        asset_name: ${{ RELEASE_FILE_APP }}
+        asset_path: ./${{ vars.RELEASE_FILE_APP }}
+        asset_name: ${{ vars.RELEASE_FILE_APP }}
         asset_content_type: application/vnd.microsoft.portable-executable
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
