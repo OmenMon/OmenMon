@@ -17,7 +17,7 @@ permissions:
   contents: write
 
 env:
-  RELEASE_WORD: ${{ github.event.release.prerelease && "Preview" || "Release" }}
+  RELEASE_WORD: ${{ github.event.release.prerelease && 'Preview' || 'Release' }}
 
 jobs:
   Call-Build:
