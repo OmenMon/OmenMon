@@ -89,5 +89,5 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         if-no-files-found: error
-        name: "OmenMon"
-        path: "Bin"
+        name: ${{ github.event.repository.name }}
+        path: ${{ vars.BIN_DIR }}
