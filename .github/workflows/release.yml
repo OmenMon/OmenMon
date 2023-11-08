@@ -16,6 +16,7 @@ on:
 permissions:
   contents: write
 
+jobs:
   call-build:
     name: "Call Build"
     secrets: inherit
