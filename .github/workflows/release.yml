@@ -32,23 +32,36 @@ jobs:
 
     steps:
     - id: download
-      name: "Download OmenMon Artifact"
+      name: "Download Artifacts"
       uses: actions/download-artifact@v3
       with:
-        name: "OmenMon"
+        name: ${{ github.event.repository.name }}
 
-    - name: 'Show Download Path'
-      run: echo ${{ steps.download.outputs.download-path }}
-
-    - name: 'List Downloaded Artifacts'
+    - name: 'List Artifacts'
       run: ls -laR ${{ steps.download.outputs.download-path }}
+
+    - name: "Create Archive"
+      run: zip -9 -r OmenMon.zip ./*
+
+    - name: "Create Archive Comment"
+      run: |
+        cat >OmenMon.zip.txt <<EOF
+        OmenMon: Hardware Monitoring & Control Utility
+        Version ${{ needs.call-build.output.version_number }}-${{ needs.call-build.output.version_word }} Build ${{ vars.BUILD_NUMBER }}
+        Timestamp: $(date -u +"%Y-%m-%d %H:%M") (UTC)
+
+        https://omenmon.github.io/
+        EOF
+
+    - name: "Add Comment to Archive"
+      run: zipnote -w OmenMon.zip < OmenMon.zip.txt
 
     - name: "Upload OmenMon Assets"
       uses: actions/upload-release-asset@v1
       with:
         upload_url: ${{ github.event.release.upload_url }}
-        asset_path: ./${{ vars.RELEASE_FILE_APP }}
-        asset_name: ${{ vars.RELEASE_FILE_APP }}
-        asset_content_type: application/vnd.microsoft.portable-executable
+        asset_path: ./OmenMon.zip
+        asset_name: OmenMon-${{ needs.call-build.output.version_number }}-${{ needs.call-build.output.version_word }}.zip
+        asset_content_type: application/zip
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
