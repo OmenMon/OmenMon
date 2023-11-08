@@ -13,35 +13,35 @@ on:
   workflow_call:
     inputs:
       version_number:
-        description: "Version number: three dot-separated non-negative integers [0.0.0]"
-        default: "0.0.0"
-        required: false
+        description: "Version number (three dot-separated non-negative integers)"
+        required: true
         type: string
       version_word:
-        description: "Version word: build type (Preview, Release, Snapshot)"
-        required: true
-        type: choice
+        default: "Snapshot"
+        description: "Build type (Preview, Release, Snapshot)"
         options:
           - "Preview"
           - "Release"
           - "Snapshot"
+        required: false
+        type: choice
 
   workflow_dispatch:
     inputs:
       version_number:
-        description: "Version number: three dot-separated non-negative integers [0.0.0]"
         default: "0.0.0"
-        required: false
+        description: "Version number"
+        required: true
         type: string
       version_word:
-        description: "Version word: build type [Snapshot]"
         default: "Snapshot"
-        required: true
-        type: choice
+        description: "Build type"
         options:
           - "Preview"
           - "Release"
           - "Snapshot"
+        required: true
+        type: choice
 
 permissions:
   contents: read
