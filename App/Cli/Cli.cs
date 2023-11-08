@@ -103,10 +103,15 @@ namespace OmenMon.AppCli {
         // Releases the console when no longer needed
         public static void Close() {
 
-            // Move the cursor to the bottom of the window,
+            // Try to move the cursor to the bottom of the window,
             // which does not happen automatically in a PowerShell session
             if(IsPowerShell)
-                Console.SetCursorPosition(0, Console.WindowHeight);
+                try {
+                    Console.SetCursorPosition(0,
+                        Console.WindowHeight >= Console.BufferHeight ?
+                            Console.BufferHeight - 1 : Console.WindowHeight);
+                } catch {
+                }
 
             // Restore the original background color
             Console.BackgroundColor = OriginalBackgroundColor;
