@@ -20,9 +20,9 @@ on:
 permissions: {}
 
 jobs:
-  Bump-Build:
+  bump:
     name: "Bump up Build"
-    runs-on: windows-latest
+    runs-on: windows-2022
 
     steps:
     - name: "Increment and Store Build Number in the Environment"
