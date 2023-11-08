@@ -628,15 +628,10 @@ namespace OmenMon.AppGui {
                 new ToolStripSeparator(),
                 new ToolStripMenuItem(Config.Locale.Get(Config.L_GUI_MENU + I_GPU_DISPLAY_COLOR), null, EventActionDisplayColor, I_GPU_DISPLAY_COLOR),
                 new ToolStripMenuItem(Config.Locale.Get(Config.L_GUI_MENU + I_GPU_DISPLAY_OFF), null, EventActionDisplayOff, I_GPU_DISPLAY_OFF),
+                new ToolStripSeparator(),
+                new ToolStripMenuItem(Config.Locale.Get(Config.L_GUI_MENU + I_GPU_MODE_DISCRETE), null, EventActionGpuMode, I_GPU_MODE_DISCRETE),
+                new ToolStripMenuItem(Config.Locale.Get(Config.L_GUI_MENU + I_GPU_MODE_OPTIMUS), null, EventActionGpuMode, I_GPU_MODE_OPTIMUS),
             });
-
-            // Add GPU mode switching portion only if supported
-            if(Context.Op.Platform.System.GetGpuModeSupport())
-                MenuGpu.DropDownItems.AddRange(new ToolStripItem[] {
-                    new ToolStripSeparator(),
-                    new ToolStripMenuItem(Config.Locale.Get(Config.L_GUI_MENU + I_GPU_MODE_DISCRETE), null, EventActionGpuMode, I_GPU_MODE_DISCRETE),
-                    new ToolStripMenuItem(Config.Locale.Get(Config.L_GUI_MENU + I_GPU_MODE_OPTIMUS), null, EventActionGpuMode, I_GPU_MODE_OPTIMUS),
-                });
 
             // Define the keyboard menu
             MenuKbd = new ToolStripMenuItem(Config.Locale.Get(Config.L_GUI_MENU + I_KBD), null, null, I_KBD);
@@ -797,6 +792,12 @@ namespace OmenMon.AppGui {
                     gpuMode == BiosData.GpuMode.Discrete;
                 ((ToolStripMenuItem) MenuGpu.DropDownItems[I_GPU_MODE_OPTIMUS]).Checked =
                     gpuMode == BiosData.GpuMode.Optimus;
+
+            } else {
+
+                // Disable GPU mode switching menu items
+                ((ToolStripMenuItem) MenuGpu.DropDownItems[I_GPU_MODE_DISCRETE]).Enabled = false;
+                ((ToolStripMenuItem) MenuGpu.DropDownItems[I_GPU_MODE_OPTIMUS]).Enabled = false;
 
             }
 
