@@ -16,25 +16,13 @@ on:
 permissions:
   contents: write
 
-jobs:
-  setup:
-    name: "Set up Build Metadata"
-    runs-on: ubuntu-latest
-    outputs:
-      version_number: ${{ github.event.release.tag_name }}
-      version_word: ${{ github.event.release.prerelease && 'Preview' || 'Release' }}
-    steps:
-    - name: "Dummy Operation"
-      run: echo Completed
-
   call-build:
     name: "Call Build"
-    needs: setup
     secrets: inherit
     uses: ./.github/workflows/build.yml
     with:
-      version_number: $${ needs.setup.output.version_number }}
-      version_word: ${{ needs.setup.output.version_word }}
+      version_number: ${{ github.event.release.tag_name }}
+      version_word: ${{ github.event.release.prerelease && 'Preview' || 'Release' }}
 
   release:
     name: "Release OmenMon"
