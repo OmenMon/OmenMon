@@ -19,12 +19,8 @@ on:
       version_word:
         default: "Snapshot"
         description: "Build type (Preview, Release, Snapshot)"
-        options:
-          - "Preview"
-          - "Release"
-          - "Snapshot"
         required: false
-        type: choice
+        type: string
 
   workflow_dispatch:
     inputs:
