@@ -437,17 +437,17 @@ namespace OmenMon.Hardware.Bios {
         }
 
         // Graphics switching support
-        // Observed: 0x0C = 0b00001100
+        // Observed: 0x06 = 0b00000110 [88F7], 0x0C = 0b00001100 [8A14]
         [Flags]
         public enum SysGpuModeSwitch : byte {
-            Unset0    = 0x01,  // Bit #0: Observed 0: Unset
-            Unset1    = 0x02,  // Bit #1: Observed 0: Unset
-            Unknown2  = 0x04,  // Bit #2: Observed 1: Set
-            Supported = 0x08,  // Bit #3: Observed 1: Set - Supported
-            Unset4    = 0x10,  // Bit #4: Observed 0: Unset
-            Unset5    = 0x20,  // Bit #5: Observed 0: Unset
-            Unset6    = 0x40,  // Bit #6: Observed 0: Unset
-            Unset7    = 0x80   // Bit #7: Observed 0: Unset
+            Unset0     = 0x01,  // Bit #0: Observed 0: Unset
+            Unset1     = 0x02,  // Bit #1: Observed 0: Unset
+            Supported4 = 0x04,  // Bit #2: Observed 1: Set - Also Supported (?)
+            Supported8 = 0x08,  // Bit #3: Observed 1: Set - Supported
+            Unset4     = 0x10,  // Bit #4: Observed 0: Unset
+            Unset5     = 0x20,  // Bit #5: Observed 0: Unset
+            Unset6     = 0x40,  // Bit #6: Observed 0: Unset
+            Unset7     = 0x80   // Bit #7: Observed 0: Unset
         }
 
         // System support flags
