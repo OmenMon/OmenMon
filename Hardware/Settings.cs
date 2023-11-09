@@ -126,7 +126,12 @@ namespace OmenMon.Hardware.Platform {
 
         // Checks whether GPU mode switching is supported
         public bool GetGpuModeSupport() {
-            return GetSystemData().GpuModeSwitch.HasFlag(BiosData.SysGpuModeSwitch.Supported);
+            // BiosData.SysGpuModeSwitch
+            // == 0x0C: Observed on model 8A14 where switching is supported
+            // == 0x08: Interpreted as support flag based on original information
+            // == 0x06: Also means supported based on user reports, add 0x04 to flags
+            return ((byte) (GetSystemData().GpuModeSwitch &
+                (BiosData.SysGpuModeSwitch.Supported4 | BiosData.SysGpuModeSwitch.Supported8)) != 0);
         }
 
         // Sets the GPU mode (Optimus or Discrete)
