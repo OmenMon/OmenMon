@@ -329,6 +329,27 @@ namespace OmenMon.Library {
             return Convert.ToString(value, nbase).PadLeft(padding, '0');
         }
 
+        // Gets a Unicode string escaped for rich-text format
+        public static string GetUnicodeStringRtf(string text) {
+
+            // Process each character in the string
+            string output = "";
+            foreach(char c in text)
+
+                // Leave basic ASCII intact
+                // (including control sequences)
+                if(c <= 0x7F)
+                    output += c;
+
+                // Escape the rest of Unicode characters
+                else
+                    output += "\\u" + Convert.ToUInt32(c) + "?";
+
+            // Return the resulting escaped string
+            return output;
+
+        }
+
         // Converts a binary, decimal or hexadecimal string argument to a word value
         public static bool GetWord(string arg, out ushort value) {
             value = 0;
