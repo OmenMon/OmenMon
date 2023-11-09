@@ -854,7 +854,7 @@ namespace OmenMon.AppGui {
         }
 
         // Update the system status rich-text field
-        private void UpdateSysRtf(string text = "") {
+        private void UpdateSysRtf() {
             this.RtfSysInfo.Rtf = Config.SysInfoRtfHeader + this.SysInfo + this.SysStatus + Config.SysInfoRtfFooter;
         }
 
