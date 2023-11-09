@@ -38,7 +38,7 @@ namespace OmenMon.AppGui {
             // Initialize the form components
             Initialize();
 
-            this.RtfAppInfo.Rtf = text != "" ? text : Config.Locale.Get(Config.L_GUI_ABOUT + "Text");
+            this.RtfAppInfo.Rtf = Conv.GetUnicodeStringRtf(text != "" ? text : Config.Locale.Get(Config.L_GUI_ABOUT + "Text"));
             this.Text = title != "" ? title : Config.Locale.Get(Config.L_GUI_ABOUT + "Title");
 
         }

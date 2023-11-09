@@ -855,7 +855,11 @@ namespace OmenMon.AppGui {
 
         // Update the system status rich-text field
         private void UpdateSysRtf() {
-            this.RtfSysInfo.Rtf = Config.SysInfoRtfHeader + this.SysInfo + this.SysStatus + Config.SysInfoRtfFooter;
+            this.RtfSysInfo.Rtf =
+                Config.SysInfoRtfHeader
+                + Conv.GetUnicodeStringRtf(this.SysInfo)
+                + Conv.GetUnicodeStringRtf(this.SysStatus)
+                + Config.SysInfoRtfFooter;
         }
 
         // Updates the temperature group
