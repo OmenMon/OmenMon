@@ -36,10 +36,13 @@ namespace OmenMon.Hardware.Platform {
 
         // BIOS Keyboard queries
         public BiosData.Backlight GetKbdBacklight();            // Backlight status
+        public bool GetKbdBacklightSupport();
         public void SetKbdBacklight(bool flag);
         public void SetKbdBacklight(BiosData.Backlight value);
         public BiosData.ColorTable GetKbdColor();               // Backlight color
+        public bool GetKbdColorSupport();
         public void SetKbdColor(BiosData.ColorTable value);
+        public BiosData.KbdType GetKbdType();                   // Keyboard type
 
         // WMI Raw data
         public Dictionary<string, string> BaseBoard { get; }
@@ -68,6 +71,7 @@ namespace OmenMon.Hardware.Platform {
         private string MfgDate;
         public Nullable<BiosData.GpuMode> GpuMode { get; private set; }
         public Nullable<BiosData.GpuPowerData> GpuPower { get; private set; }
+        public Nullable<BiosData.KbdType> KbdType { get; private set; }
         public Nullable<BiosData.SystemData> SystemData { get; private set; }
 
         // Constructs a system information instance
@@ -161,6 +165,12 @@ namespace OmenMon.Hardware.Platform {
             return Hw.BiosGet<BiosData.Backlight>(Hw.Bios.GetBacklight);
         }
 
+        // Checks whether keyboard backlight toggling is supported
+        public bool GetKbdBacklightSupport() {
+            // Per-key RGB keyboards currently not supported
+            return GetKbdType() != BiosData.KbdType.PerKeyRgb;
+        }
+
         // Sets the keyboard backlight status given an enumerated value
         public void SetKbdBacklight(BiosData.Backlight value) {
             Hw.BiosSet(Hw.Bios.SetBacklight, value);
@@ -177,10 +187,23 @@ namespace OmenMon.Hardware.Platform {
             return Hw.BiosGetStruct<BiosData.ColorTable>(Hw.Bios.GetColorTable);
         }
 
+        // Checks whether keyboard color switching is supported
+        public bool GetKbdColorSupport() {
+            // Per-key RGB keyboards currently not supported
+            return GetKbdType() != BiosData.KbdType.PerKeyRgb;
+        }
+
         // Sets the keyboard backlight color
         public void SetKbdColor(BiosData.ColorTable value) {
             Hw.BiosSetStruct(Hw.Bios.SetColorTable, value);
 
+        }
+
+        // Retrieves keyboard type from the BIOS
+        public BiosData.KbdType GetKbdType() {
+            if(this.KbdType == null)
+                this.KbdType = Hw.BiosGet<BiosData.KbdType>(Hw.Bios.GetKbdType);
+            return (BiosData.KbdType) this.KbdType;
         }
 
         // Retrieves the baseboard manufacturer name
