@@ -217,7 +217,7 @@ namespace OmenMon.Hardware.Platform {
             int value;
 
             // Binary-search the level list
-            // If the result is non-zero, an index was found
+            // If the result is non-negative, an index was found
             if((value = Levels.BinarySearch(temperature)) >= 0)
 
                 // Return the item at the index directly
@@ -320,8 +320,8 @@ namespace OmenMon.Hardware.Platform {
             if(forceUpdate
                 || this.Platform.Fans.GetMode() != mode)
 
-               // Set the fan mode
-               this.Platform.Fans.SetMode((BiosData.FanMode) mode);
+                // Set the fan mode
+                this.Platform.Fans.SetMode((BiosData.FanMode) mode);
 
         }
 
