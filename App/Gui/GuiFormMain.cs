@@ -71,13 +71,25 @@ namespace OmenMon.AppGui {
             // Pre-populate the last DPI setting to the value at launch
             this.LastDpi = (int) Gui.GetDeviceContextDpi(IntPtr.Zero);
 
-            // Initialize the keyboard color management class
-            // and update the picture depending on the support
-            this.Kbd = new GuiKbd(this.Context);
+            // For keyboards that support backlight and color settings
             if(Context.Op.Platform.System.GetKbdBacklightSupport()
-                && Context.Op.Platform.System.GetKbdColorSupport())
+                && Context.Op.Platform.System.GetKbdColorSupport()) {
+
+                // Initialize the keyboard color management class
+                this.Kbd = new GuiKbd(this.Context);
+
+                // Update the keyboard picture
                 this.PicKbd.Image = Kbd.GetImage();
-            else
+
+                // Initialize the color picker
+                this.ColorPicker = new ColorDialogEx(UpdateKbdCallback);
+
+                // Pre-populate the custom colors for the color picker
+                this.ColorPicker.CustomColors = Kbd.UpdateColorPicker(Config.GuiColorPickerCustom);
+
+            } else
+
+                // Show a static disabled keyboard image if unsupported
                 this.PicKbd.Image = OmenMon.Resources.KeyboardOff;
 
             // Set up the fan presets, system status data
@@ -85,12 +97,6 @@ namespace OmenMon.AppGui {
             SetupFanCtl();
             SetupSys();
             SetupTmp();
-
-            // Initialize the color picker
-            this.ColorPicker = new ColorDialogEx(UpdateKbdCallback);
-
-            // Pre-populate the custom colors for the color picker
-            this.ColorPicker.CustomColors = Kbd.UpdateColorPicker(Config.GuiColorPickerCustom);
 
             // Update the controls to reflect the initial hardware state
             UpdateAll();
@@ -396,9 +402,9 @@ namespace OmenMon.AppGui {
         private void EventColorPick(object sender, MouseEventArgs e) {
 
             // No action if backlight off or no support
-            if(!Kbd.GetBacklight()
-                || !Context.Op.Platform.System.GetKbdBacklightSupport()
-                || !Context.Op.Platform.System.GetKbdColorSupport())
+            if(!Context.Op.Platform.System.GetKbdBacklightSupport()
+                || !Context.Op.Platform.System.GetKbdColorSupport()
+                || !Kbd.GetBacklight())
 
                 return;
 
@@ -767,9 +773,9 @@ namespace OmenMon.AppGui {
                 this.ChkKbdBacklight.Enabled = false;
 
             // Disable the interface when backlight is off or no support
-            if(!Kbd.GetBacklight()
-                || !Context.Op.Platform.System.GetKbdBacklightSupport()
-                || !Context.Op.Platform.System.GetKbdColorSupport()) {
+            if(!Context.Op.Platform.System.GetKbdBacklightSupport()
+                || !Context.Op.Platform.System.GetKbdColorSupport()
+                || !Kbd.GetBacklight()) {
 
                 this.ChkKbdBacklight.Checked = false;
                 this.CmbKbdColorPreset.DataSource = null;
