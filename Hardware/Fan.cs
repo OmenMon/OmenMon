@@ -57,6 +57,7 @@ namespace OmenMon.Hardware.Platform {
             this.RateRead.SetConstraint(Config.MaxBelievablePercent);
             this.RateWrite = rateWrite;
             this.Speed = speed;
+            this.Speed.SetConstraint(Config.FanLevelMax * (100 + Config.MaxBelievableFanSpeedPercentOverMax));
 
         }
 
