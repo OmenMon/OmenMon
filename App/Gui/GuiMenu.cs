@@ -315,7 +315,10 @@ namespace OmenMon.AppGui {
             BiosData.GpuMode gpuModeNow = Context.Op.Platform.System.GetGpuMode(true);
             BiosData.GpuMode gpuModeAsk =
                 ((ToolStripMenuItem) sender).Name.EndsWith(S_GPU_MODE_DISCRETE) ?
-                    BiosData.GpuMode.Discrete : BiosData.GpuMode.Optimus;
+                    BiosData.GpuMode.Discrete :
+                       Context.Op.Platform.System.GetSystemData()
+                       .GpuModeSwitch.HasFlag(BiosData.SysGpuModeSwitch.Supported8) ?
+                           BiosData.GpuMode.Optimus : BiosData.GpuMode.Hybrid;
 
             // Proceed only if the mode is different than now
             if(gpuModeAsk != gpuModeNow) {
@@ -791,7 +794,7 @@ namespace OmenMon.AppGui {
                 ((ToolStripMenuItem) MenuGpu.DropDownItems[I_GPU_MODE_DISCRETE]).Checked =
                     gpuMode == BiosData.GpuMode.Discrete;
                 ((ToolStripMenuItem) MenuGpu.DropDownItems[I_GPU_MODE_OPTIMUS]).Checked =
-                    gpuMode == BiosData.GpuMode.Optimus;
+                    (gpuMode == BiosData.GpuMode.Hybrid || gpuMode == BiosData.GpuMode.Optimus);
 
             } else {
 
