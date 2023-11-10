@@ -72,8 +72,13 @@ namespace OmenMon.AppGui {
             this.LastDpi = (int) Gui.GetDeviceContextDpi(IntPtr.Zero);
 
             // Initialize the keyboard color management class
+            // and update the picture depending on the support
             this.Kbd = new GuiKbd(this.Context);
-            this.PicKbd.Image = Kbd.GetImage();
+            if(Context.Op.Platform.System.GetKbdBacklightSupport()
+                && Context.Op.Platform.System.GetKbdColorSupport())
+                this.PicKbd.Image = Kbd.GetImage();
+            else
+                this.PicKbd.Image = OmenMon.Resources.KeyboardOff;
 
             // Set up the fan presets, system status data
             // and temperature readout captions (static)
@@ -390,8 +395,11 @@ namespace OmenMon.AppGui {
         // Handles the event of a color zone being clicked
         private void EventColorPick(object sender, MouseEventArgs e) {
 
-            // No action if backlight off
-            if(!Kbd.GetBacklight())
+            // No action if backlight off or no support
+            if(!Kbd.GetBacklight()
+                || !Context.Op.Platform.System.GetKbdBacklightSupport()
+                || !Context.Op.Platform.System.GetKbdColorSupport())
+
                 return;
 
             // Determine the clicked zone from co-ordinates
@@ -754,9 +762,27 @@ namespace OmenMon.AppGui {
             // Restore the default color of the color as parameter text box
             this.TxtKbdColorVal.ForeColor = Color.Empty;
 
-            // Enable the interface when backlight is on
-            if(Kbd.GetBacklight()) {
+            // Disable the backlight toggle for unsupported devices
+            if(!Context.Op.Platform.System.GetKbdBacklightSupport())
+                this.ChkKbdBacklight.Enabled = false;
 
+            // Disable the interface when backlight is off or no support
+            if(!Kbd.GetBacklight()
+                || !Context.Op.Platform.System.GetKbdBacklightSupport()
+                || !Context.Op.Platform.System.GetKbdColorSupport()) {
+
+                this.ChkKbdBacklight.Checked = false;
+                this.CmbKbdColorPreset.DataSource = null;
+                this.CmbKbdColorPreset.Enabled = false;
+                this.TxtKbdColorVal.Enabled = false;
+                this.TxtKbdColorVal.Text = "";
+                this.BtnKbdColorPresetDel.Enabled = false;
+                this.BtnKbdColorPresetSet.Enabled = false;
+                this.PicKbd.Cursor = Cursors.Default;
+
+            } else {
+
+                // Enable the interface when backlight is on
                 this.ChkKbdBacklight.Checked = true;
                 this.CmbKbdColorPreset.BeginUpdate();
                 ColorPresets.Clear();
@@ -774,18 +800,6 @@ namespace OmenMon.AppGui {
                 this.BtnKbdColorPresetDel.Enabled = true;
                 this.BtnKbdColorPresetSet.Enabled = true;
                 this.PicKbd.Cursor = Cursors.Hand;
-
-            // Disable the interface when backlight is off
-            } else {
-
-                this.ChkKbdBacklight.Checked = false;
-                this.CmbKbdColorPreset.DataSource = null;
-                this.CmbKbdColorPreset.Enabled = false;
-                this.TxtKbdColorVal.Enabled = false;
-                this.TxtKbdColorVal.Text = "";
-                this.BtnKbdColorPresetDel.Enabled = false;
-                this.BtnKbdColorPresetSet.Enabled = false;
-                this.PicKbd.Cursor = Cursors.Default;
 
             }
 

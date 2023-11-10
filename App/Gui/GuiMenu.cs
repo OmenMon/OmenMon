@@ -853,14 +853,35 @@ namespace OmenMon.AppGui {
         // Updates the keyboard backlight checkbox
         public void UpdateKbdBacklight() {
 
-            // Set the checked status accordingly
-            ((ToolStripMenuItem) MenuKbd.DropDownItems[I_KBD_BACKLIGHT]).Checked =
-                Context.Op.Platform.System.GetKbdBacklight() == BiosData.Backlight.On ? true : false;
+            if(Context.Op.Platform.System.GetKbdBacklightSupport())
+
+                // Set the checked status accordingly
+                ((ToolStripMenuItem) MenuKbd.DropDownItems[I_KBD_BACKLIGHT]).Checked =
+                    Context.Op.Platform.System.GetKbdBacklight() == BiosData.Backlight.On ? true : false;
+
+            else
+
+                // Disable on unsupported devices
+                ((ToolStripMenuItem) MenuKbd.DropDownItems[I_KBD_BACKLIGHT]).Enabled = false;
 
         }
 
         // Updates the checkboxes in the keyboard color menu
         public void UpdateKbdColorPreset() {
+
+            // Check for unsupported devices
+            if(!Context.Op.Platform.System.GetKbdBacklightSupport()
+                || !Context.Op.Platform.System.GetKbdColorSupport()) {
+
+                // Disable all items
+                foreach(ToolStripItem item in MenuKbd.DropDownItems)
+                    if(item is ToolStripMenuItem && item.Name.StartsWith(P_KBD_COLOR_PRESET))
+                        ((ToolStripMenuItem) item).Enabled = false;
+
+                // Over
+                return;
+
+            }
 
             // Retrieve the current color table
             BiosData.ColorTable colorNow = Context.Op.Platform.System.GetKbdColor();
