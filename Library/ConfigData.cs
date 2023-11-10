@@ -225,7 +225,7 @@ namespace OmenMon.Library {
         public const string LockPathCli = "Global\\OmenMonCli";
         public const string LockPathGui = "Global\\OmenMonGui";
 
-        // Maximum believable speed percent over maximum value when reading from the Embedded Controller (used for fan rate)
+        // Maximum believable speed percent over maximum value when reading from the Embedded Controller (used for fan speed)
         public const int MaxBelievableFanSpeedPercentOverMax = 10;
 
         // Maximum believable percent value when reading from the Embedded Controller (used for fan rate)
