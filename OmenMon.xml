@@ -79,51 +79,43 @@
              (depending on the Autoconfig setting) -->
         <FanProgramDefault>None</FanProgramDefault>
 
-        <!-- Fan program definitions -->
+        <!-- Fan program definitions
+             Curve visualization: https://www.desmos.com/calculator/6vfpghtud0
+                                  (editable initial data for the Power program) -->
         <FanPrograms>
-            <Program Name="OEM Test">
-                <FanMode>Performance</FanMode>
-                <GpuPower>Maximum</GpuPower>
-                <Level Temperature="00"><Cpu>00</Cpu><Gpu>00</Gpu></Level>
-                <Level Temperature="21"><Cpu>21</Cpu><Gpu>00</Gpu></Level>
-                <Level Temperature="23"><Cpu>22</Cpu><Gpu>20</Gpu></Level>
-                <Level Temperature="25"><Cpu>24</Cpu><Gpu>22</Gpu></Level>
-                <Level Temperature="28"><Cpu>26</Cpu><Gpu>24</Gpu></Level>
-                <Level Temperature="30"><Cpu>27</Cpu><Gpu>25</Gpu></Level>
-                <Level Temperature="31"><Cpu>28</Cpu><Gpu>26</Gpu></Level>
-                <Level Temperature="33"><Cpu>29</Cpu><Gpu>31</Gpu></Level>
-                <Level Temperature="36"><Cpu>32</Cpu><Gpu>35</Gpu></Level>
-                <Level Temperature="40"><Cpu>37</Cpu><Gpu>39</Gpu></Level>
-                <Level Temperature="42"><Cpu>40</Cpu><Gpu>42</Gpu></Level>
-                <Level Temperature="45"><Cpu>45</Cpu><Gpu>47</Gpu></Level>
-                <Level Temperature="48"><Cpu>50</Cpu><Gpu>52</Gpu></Level>
-                <Level Temperature="50"><Cpu>55</Cpu><Gpu>57</Gpu></Level>
-            </Program>
             <Program Name="Power">
                 <FanMode>Performance</FanMode>
                 <GpuPower>Maximum</GpuPower>
                 <Level Temperature="00"><Cpu>00</Cpu><Gpu>00</Gpu></Level>
-                <Level Temperature="35"><Cpu>21</Cpu><Gpu>00</Gpu></Level>
-                <Level Temperature="36"><Cpu>22</Cpu><Gpu>20</Gpu></Level>
-                <Level Temperature="38"><Cpu>24</Cpu><Gpu>22</Gpu></Level>
-                <Level Temperature="40"><Cpu>26</Cpu><Gpu>24</Gpu></Level>
-                <Level Temperature="45"><Cpu>27</Cpu><Gpu>25</Gpu></Level>
-                <Level Temperature="50"><Cpu>28</Cpu><Gpu>26</Gpu></Level>
-                <Level Temperature="55"><Cpu>29</Cpu><Gpu>31</Gpu></Level>
+                <Level Temperature="36"><Cpu>21</Cpu><Gpu>00</Gpu></Level>
+                <Level Temperature="39"><Cpu>22</Cpu><Gpu>22</Gpu></Level>
+                <Level Temperature="42"><Cpu>23</Cpu><Gpu>24</Gpu></Level>
+                <Level Temperature="45"><Cpu>24</Cpu><Gpu>26</Gpu></Level>
+                <Level Temperature="48"><Cpu>25</Cpu><Gpu>27</Gpu></Level>
+                <Level Temperature="51"><Cpu>26</Cpu><Gpu>29</Gpu></Level>
+                <Level Temperature="54"><Cpu>28</Cpu><Gpu>31</Gpu></Level>
+                <Level Temperature="57"><Cpu>30</Cpu><Gpu>33</Gpu></Level>
                 <Level Temperature="60"><Cpu>32</Cpu><Gpu>35</Gpu></Level>
-                <Level Temperature="65"><Cpu>37</Cpu><Gpu>39</Gpu></Level>
-                <Level Temperature="70"><Cpu>40</Cpu><Gpu>42</Gpu></Level>
-                <Level Temperature="75"><Cpu>45</Cpu><Gpu>47</Gpu></Level>
-                <Level Temperature="80"><Cpu>50</Cpu><Gpu>52</Gpu></Level>
-                <Level Temperature="85"><Cpu>55</Cpu><Gpu>57</Gpu></Level>
+                <Level Temperature="63"><Cpu>34</Cpu><Gpu>37</Gpu></Level>
+                <Level Temperature="66"><Cpu>36</Cpu><Gpu>40</Gpu></Level>
+                <Level Temperature="69"><Cpu>38</Cpu><Gpu>43</Gpu></Level>
+                <Level Temperature="62"><Cpu>41</Cpu><Gpu>46</Gpu></Level>
+                <Level Temperature="75"><Cpu>44</Cpu><Gpu>49</Gpu></Level>
+                <Level Temperature="78"><Cpu>47</Cpu><Gpu>52</Gpu></Level>
+                <Level Temperature="81"><Cpu>50</Cpu><Gpu>55</Gpu></Level>
+                <Level Temperature="84"><Cpu>55</Cpu><Gpu>57</Gpu></Level>
             </Program>
             <Program Name="Silent">
                 <FanMode>Default</FanMode>
                 <GpuPower>Minimum</GpuPower>
                 <Level Temperature="00"><Cpu>00</Cpu><Gpu>00</Gpu></Level>
-                <Level Temperature="60"><Cpu>21</Cpu><Gpu>23</Gpu></Level>
-                <Level Temperature="70"><Cpu>40</Cpu><Gpu>42</Gpu></Level>
-                <Level Temperature="80"><Cpu>50</Cpu><Gpu>52</Gpu></Level>
+                <Level Temperature="50"><Cpu>21</Cpu><Gpu>00</Gpu></Level>
+                <Level Temperature="55"><Cpu>25</Cpu><Gpu>25</Gpu></Level>
+                <Level Temperature="60"><Cpu>30</Cpu><Gpu>30</Gpu></Level>
+                <Level Temperature="65"><Cpu>35</Cpu><Gpu>35</Gpu></Level>
+                <Level Temperature="70"><Cpu>40</Cpu><Gpu>40</Gpu></Level>
+                <Level Temperature="75"><Cpu>45</Cpu><Gpu>45</Gpu></Level>
+                <Level Temperature="80"><Cpu>50</Cpu><Gpu>50</Gpu></Level>
                 <Level Temperature="85"><Cpu>55</Cpu><Gpu>57</Gpu></Level>
             </Program>
         </FanPrograms>
