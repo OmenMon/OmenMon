@@ -118,12 +118,12 @@ namespace OmenMon.Hardware.Platform {
             Hw.BiosSet(Hw.Bios.SetFanLevel, levels);
         }
 
-        // Retrieves the maximum fan speed status
+        // Retrieves the manual fan speed toggle status
         public bool GetManual() {
             return this.Manual.GetValue() == (byte) PlatformData.FanManual.On;
         }
 
-        // Sets the maximum fan speed status
+        // Sets the manual fan speed toggle status
         public void SetManual(bool flag) {
             this.Manual.SetValue(flag ?
                 (byte) PlatformData.FanManual.On : (byte) PlatformData.FanManual.Off);
