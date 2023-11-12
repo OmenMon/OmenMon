@@ -187,10 +187,10 @@
         <!-- Update Interval -->
 
         <!-- How often the dynamic notification icon is updated [s] -->
-        <UpdateIconInterval>2</UpdateIconInterval>
+        <UpdateIconInterval>3</UpdateIconInterval>
 
         <!-- How often the monitoring data on the main form is updated [s] -->
-        <UpdateMonitorInterval>2</UpdateMonitorInterval>
+        <UpdateMonitorInterval>3</UpdateMonitorInterval>
 
         <!-- How often the fan program is updated (if running) [s] -->
         <UpdateProgramInterval>15</UpdateProgramInterval>
