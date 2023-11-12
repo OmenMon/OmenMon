@@ -155,7 +155,8 @@ namespace OmenMon.Hardware.Bios {
         // Retrieves the keyboard type
         public KbdType GetKbdType() {
             byte[] outData;
-            Check(Send(Cmd.Default, 0x2B, new byte[4] {0x00, 0x00, 0x00, 0x00}, 4, out outData));
+            // Do not check BIOS error status for this call, just assume Standard (0)
+            Send(Cmd.Default, 0x2B, new byte[4] {0x00, 0x00, 0x00, 0x00}, 4, out outData);
             // See: KbdType (enum)
             return (KbdType) outData[0];
         }
@@ -179,7 +180,8 @@ namespace OmenMon.Hardware.Bios {
         // Checks if keyboard backlight is supported
         public bool HasBacklight() {
             byte[] outData;
-            Check(Send(Cmd.Keyboard, 0x01, new byte[4] {0x00, 0x00, 0x00, 0x00}, 4, out outData));
+            // Do not check BIOS error status for this call, just assume no support
+            Send(Cmd.Keyboard, 0x01, new byte[4] {0x00, 0x00, 0x00, 0x00}, 4, out outData);
             // Byte #0 Bit #0: 0 - No Backlight Support, 1 - Backlight Support (Observed: 1)
             // Byte #0: Unknown (Observed: 0x07)
             // Byte #1: Unknown (Observed: 0x21)
