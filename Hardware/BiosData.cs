@@ -91,7 +91,7 @@ namespace OmenMon.Hardware.Bios {
 
         // Keyboard type
         public enum KbdType : byte {
-            Standard   = 0x00,  // Standard layout
+            Standard   = 0x00,  // Standard layout (or BIOS call failed)
             WithNumPad = 0x01,  // Standard layout with numerical block
             TenKeyLess = 0x02,  // Extra navigation keys but no numerical block
             PerKeyRgb  = 0x03   // Independently-definiable color for each key (?)
