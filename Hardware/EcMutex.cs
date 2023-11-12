@@ -3,6 +3,8 @@
      //  https://omenmon.github.io/
 
 using System;
+using System.Security.AccessControl;
+using System.Security.Principal;
 using System.Threading;
 using OmenMon.Library;
 
@@ -23,10 +25,15 @@ namespace OmenMon.Hardware.Ec {
 
             static Mutex CreateOrOpenExistingMutex(string name) {
                 try {
-                    return new Mutex(false, name);
+                    MutexSecurity security = new MutexSecurity();
+                    security.AddAccessRule(
+                        new MutexAccessRule(
+                            new SecurityIdentifier(WellKnownSidType.WorldSid, null),
+                            MutexRights.FullControl, AccessControlType.Allow));
+                    return new Mutex(false, name, out _, security);
                 } catch(UnauthorizedAccessException) {
                     try {
-                        return Mutex.OpenExisting(name);
+                        return Mutex.OpenExisting(name, MutexRights.Synchronize);
                     } catch {
                     }
                 }
