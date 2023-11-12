@@ -167,8 +167,11 @@ namespace OmenMon.Hardware.Platform {
 
         // Checks whether keyboard backlight toggling is supported
         public bool GetKbdBacklightSupport() {
-            // Per-key RGB keyboards currently not supported
-            return GetKbdType() != BiosData.KbdType.PerKeyRgb;
+            // Per-key RGB keyboards currently not supported,
+            // as well as any devices that report no backlight
+            // (or if the BIOS call fails when trying to query)
+            return GetKbdType() != BiosData.KbdType.PerKeyRgb
+                && Hw.BiosGet<bool>(Hw.Bios.HasBacklight);
         }
 
         // Sets the keyboard backlight status given an enumerated value
@@ -189,8 +192,9 @@ namespace OmenMon.Hardware.Platform {
 
         // Checks whether keyboard color switching is supported
         public bool GetKbdColorSupport() {
-            // Per-key RGB keyboards currently not supported
-            return GetKbdType() != BiosData.KbdType.PerKeyRgb;
+            // All keyboards that don't support backlight toggling,
+            // don't support color setting either
+            return GetKbdBacklightSupport();
         }
 
         // Sets the keyboard backlight color
