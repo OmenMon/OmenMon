@@ -50,9 +50,9 @@ namespace OmenMon.Library {
         public static int EcMonInterval  = 1000; // Embedded Controller monitoring interval
         public static int EcMutexTimeout =  200; // How long before bailing out trying to get a mutex
 
-        public static int EcFailLimit  = 20;  // Maximum number of failed attempts waiting to read
-        public static int EcRetryLimit =  5;  // Maximum number of read and write attempts
-        public static int EcWaitLimit  = 50;  // Iterations before waiting fails each time
+        public static int EcFailLimit  = 15;  // Maximum number of failed attempts waiting to read
+        public static int EcRetryLimit =  3;  // Maximum number of read and write attempts
+        public static int EcWaitLimit  = 30;  // Iterations before waiting fails each time
 
         // Environment variable settings
         public static string EnvVarSelfName = AppName;
@@ -303,7 +303,7 @@ namespace OmenMon.Library {
         public static int UpdateMonitorInterval = 3;
 
         // How often the program settings are updated (in ticks)
-        public static int UpdateProgramInterval = 30;
+        public static int UpdateProgramInterval = 15;
 
         // Wait duration when stopping a process (Explorer shell) or a service (nVidia Container)
         public const int WaitToStopProcess = 1000;
