@@ -115,7 +115,17 @@ namespace OmenMon.Hardware.Platform {
 
         // Sets the levels of all fans at the same time
         public void SetLevels(byte[] levels) {
-            Hw.BiosSet(Hw.Bios.SetFanLevel, levels);
+            try {
+                // Make a WMI BIOS call to set the level of both fans
+                Hw.BiosSet(Hw.Bios.SetFanLevel, levels);
+            // If the call failed (status is always checked,
+            // regardless of Config.BiosErrorReporting)
+            } catch {
+                // Try to set the speed for each fan individually
+                this.SetManual(true);
+                for(int i = 0; i < levels.Length; i++)
+                    this.Fan[i].SetLevel(levels[i]);
+            }
         }
 
         // Retrieves the manual fan speed toggle status
