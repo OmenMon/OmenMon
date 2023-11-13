@@ -326,7 +326,8 @@ namespace OmenMon.Hardware.Bios {
 
         // Updates the current speed level for each fan
         public void SetFanLevel(byte[] data) {
-            Check(Send(Cmd.Default, 0x2E, new byte[4] {(byte) data[0], (byte) data[1], 0x00, 0x00}));
+            // Note: this call will always check for BIOS error and throw an exception if it occurred
+            Check(Send(Cmd.Default, 0x2E, new byte[4] {(byte) data[0], (byte) data[1], 0x00, 0x00}), true);
         }
 
         // Sets the active fan performance mode
