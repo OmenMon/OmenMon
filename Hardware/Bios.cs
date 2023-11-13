@@ -185,11 +185,11 @@ namespace OmenMon.Hardware.Bios {
         }
 
         // Evaluates the return status following a Send() call
-        public void Check(int code) {
+        public void Check(int code, bool force = false) {
 
             // Optionally skip to make the application
             // usable with not fully-compatible models
-            if(!Config.BiosErrorReporting)
+            if(!force && !Config.BiosErrorReporting)
                 return;
 
             // Check the return status
@@ -206,8 +206,8 @@ namespace OmenMon.Hardware.Bios {
                 case 5: // Insufficient input or output buffer size
                     throw new BiosException(Config.GetError("ErrBiosCall|ErrBiosSendSize"));
 
-                // Note: Codes 4 & 6 were also observed
-                // but their exact meaning is not known
+                // Note: Codes 1, 4, 6 and 46 were also observed
+                // but their exact meaning is not understood
 
                 default: // Unknown error
                     throw new BiosException(String.Format(Config.GetError("ErrBiosCall|ErrBiosSendUnknown"), code));
