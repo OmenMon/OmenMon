@@ -56,6 +56,11 @@
 
         <!-- Fan Control -->
 
+        <!-- Fan countdown will always be continually extended, even
+             with no fan program running, no constant-speed button
+             selected, and the main window hidden, until exit -->
+        <FanCountdownExtendAlways>false</FanCountdownExtendAlways>
+
         <!-- Fan countdown timer will be extended by this value [s] -->
         <FanCountdownExtendInterval>120</FanCountdownExtendInterval>
 
@@ -65,7 +70,8 @@
              fan countdown value will be extended when it reaches
              less than the value for:
              UpdateMonitorInterval + FanCountdownExtendThreshold
-             In fan program mode, the threshold is:
+             In fan program mode, or when FanCountdownExtendAlways
+             is enabled, the threshold is:
              UpdateProgramInterval + FanCountdownExtendThreshold -->
         <FanCountdownExtendThreshold>5</FanCountdownExtendThreshold>
 
