@@ -139,11 +139,15 @@ namespace OmenMon.Hardware.Platform {
                     this.Temperature[2] = new WmiBiosTemperatureComponent(Config.MaxBelievableTemperature);
                     this.Temperature[3] = new EcComponent((byte) EmbeddedControllerData.Register.RTMP, Config.MaxBelievableTemperature);
                     this.Temperature[4] = new EcComponent((byte) EmbeddedControllerData.Register.TMP1, Config.MaxBelievableTemperature);
-                    this.Temperature[5] = new EcComponent((byte) EmbeddedControllerData.Register.TNT2, Config.MaxBelievableTemperature);
+                    this.Temperature[5] = new EcComponent((byte) EmbeddedControllerData.Register.TNT2, 97); // See note below
                     this.Temperature[6] = new EcComponent((byte) EmbeddedControllerData.Register.TNT3, Config.MaxBelievableTemperature);
                     this.Temperature[7] = new EcComponent((byte) EmbeddedControllerData.Register.TNT4, Config.MaxBelievableTemperature);
                     this.Temperature[8] = new EcComponent((byte) EmbeddedControllerData.Register.TNT5, Config.MaxBelievableTemperature);
                     break;
+
+                    // Note: Reddit user @ManuSC12 reports TNT2 sensor is permanently stuck at 98°C in his model,
+                    // making it impossible to use fan programs: the long-term solution is to add a different case
+                    // above for his model number but since he did not state it, lower the threshold in the meantime
 
             }
 
