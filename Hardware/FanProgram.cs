@@ -61,6 +61,7 @@ namespace OmenMon.Hardware.Platform {
         private BiosData.GpuPowerData GpuPowerData;
 
         // State flags
+        public bool IsAlternate { get; private set; }
         public bool IsEnabled { get; private set; }
 
         // Last fan mode and GPU power data before the program started
@@ -84,6 +85,7 @@ namespace OmenMon.Hardware.Platform {
 
             this.Callback = callback;
             this.GpuPowerData = default(BiosData.GpuPowerData);
+            this.IsAlternate = false;
             this.IsEnabled = false;
             this.LastFanMode = BiosData.FanMode.Default;
             this.LastGpuPowerData = default(BiosData.GpuPowerData);
@@ -103,7 +105,7 @@ namespace OmenMon.Hardware.Platform {
         }
 
         // Starts a fan program given its name
-        public bool Run(string name) {
+        public bool Run(string name, isAlternate = false) {
 
             // Note: no need to terminate
             // the previous program first, if any
@@ -116,6 +118,9 @@ namespace OmenMon.Hardware.Platform {
             // Enable manual fan mode
             if(Config.FanLevelNeedManual)
                 Platform.Fans.SetManual(true);
+
+            // Set the alternate flag
+            this.IsAlternate = isAlternate;
 
             // Set the state flag
             this.IsEnabled = true;
@@ -154,7 +159,8 @@ namespace OmenMon.Hardware.Platform {
             // Restore the previous GPU power settings
             UpdateGpuPower(true, this.LastGpuPowerData);
 
-            // Set the state flag
+            // Set the state flags
+            this.IsAlternate = false;
             this.IsEnabled = false;
 
             // Reset data
