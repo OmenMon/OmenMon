@@ -105,7 +105,7 @@ namespace OmenMon.Hardware.Platform {
         }
 
         // Starts a fan program given its name
-        public bool Run(string name, isAlternate = false) {
+        public bool Run(string name, bool isAlternate = false) {
 
             // Note: no need to terminate
             // the previous program first, if any
