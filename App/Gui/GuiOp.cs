@@ -90,17 +90,23 @@ namespace OmenMon.AppGui {
             // Handle notice-severity messages
             else if(severity == FanProgram.Severity.Notice) {
 
+                // Add a prefix if an alternate fan program
+                string name = Context.Op.Program.IsAlternate ?
+                    Config.Locale.Get(Config.L_PROG + "Alt") + " "
+                    + Context.Op.Program.GetName()
+                    : Context.Op.Program.GetName();
+
                 // If the main form is available, update the status there
                 if(Context.FormMain != null && Context.FormMain.Visible)
                     Context.FormMain.UpdateSysMsg(
                         message.Replace(
                             Config.Locale.Get(Config.L_PROG + "SubMax"),
                             Conv.RTF_SUB1 + Config.Locale.Get(Config.L_PROG + "SubMax") + Conv.RTF_SUBSUP0)
-                        + " " + Context.Op.Program.GetName());
+                        + " " + name);
 
                 // Also put it in the tray icon tooltip
                 Context.SetNotifyText(
-                    Config.Locale.Get(Config.L_PROG) + ": " + Context.Op.Program.GetName()
+                    Config.Locale.Get(Config.L_PROG) + ": " + name
                     + " @ " + DateTime.Now.ToString(Config.TimestampFormat)
                     + Environment.NewLine + message);
 
