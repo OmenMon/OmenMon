@@ -25,6 +25,9 @@ namespace OmenMon.AppGui {
         // Parent class reference
         private GuiTray Context;
 
+        // Flag to indicate if running on full power
+        public bool FullPower { get; private set; }
+
         // Constructs the operation-running class
         public GuiOp(GuiTray context) {
 
@@ -40,6 +43,9 @@ namespace OmenMon.AppGui {
 
             // Initialize the fan program
             this.Program = new FanProgram(this.Platform, FanProgramCallback);
+
+            // Set the full power flag
+            this.FullPower = this.Platform.System.IsFullPower();
 
         }
 
@@ -60,8 +66,12 @@ namespace OmenMon.AppGui {
                     (BiosData.GpuPowerLevel)
                         Enum.Parse(typeof(BiosData.GpuPowerLevel), Config.GpuPowerDefault)));
 
-            // Apply the default fan program
-            this.Program.Run(Config.FanProgramDefault);
+            // Apply the default fan program,
+            // or the alternative program if no AC
+            if(this.FullPower)
+                this.Program.Run(Config.FanProgramDefault);
+            else
+                this.Program.Run(Config.FanProgramDefaultAlt, true);
 
             // Update the main form, if visible
             if(Context.FormMain != null && Context.FormMain.Visible)
@@ -162,6 +172,32 @@ namespace OmenMon.AppGui {
                 Context.ToggleFormMain();
 
             }
+
+        }
+
+        // Responds to power-mode status change events
+        public void PowerChange() {
+
+            // Only if a fan program is active, if configured to do so,
+            // and if the power state actually changed from the last-recorded
+            if(Config.AutoConfig && this.Program.IsEnabled
+                && this.FullPower != this.Platform.System.IsFullPower()) {
+
+                // Toggle the power state
+                this.FullPower = !this.FullPower;
+
+                // Apply the default fan program,
+                // or the alternative program if no AC
+                if(this.FullPower)
+                    this.Program.Run(Config.FanProgramDefault);
+                else
+                    this.Program.Run(Config.FanProgramDefaultAlt, true);
+
+            }
+
+            // Separately also update the main form, if it's visible
+            if(Context.FormMain != null && Context.FormMain.Visible)
+               Context.FormMain.UpdateSys();
 
         }
 
