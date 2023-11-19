@@ -98,6 +98,9 @@ namespace OmenMon.Library {
         // Default fan program, which might be loaded on startup
         public static string FanProgramDefault; // Unset by default, since there is no default fan program
 
+        // Default alternative fan program when the system is not on AC power
+        public static string FanProgramDefaultAlt; // Unset by default
+
         // Configuration XML file path
         public static string FilePath = "";
 

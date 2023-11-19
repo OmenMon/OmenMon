@@ -187,6 +187,9 @@ namespace OmenMon.Library {
                     FanProgramDefault =
                         GetString(xml, XmlPrefix + "FanProgramDefault");
 
+                    FanProgramDefaultAlt =
+                        GetString(xml, XmlPrefix + "FanProgramDefaultAlt");
+
                     GpuPowerDefault =
                         GetString(xml, XmlPrefix + "GpuPowerDefault");
 
@@ -386,6 +389,7 @@ namespace OmenMon.Library {
                     SetBool(xml, XmlPrefix + "FanLevelNeedManual", FanLevelNeedManual);
                     SetBool(xml, XmlPrefix + "FanLevelUseEc", FanLevelUseEc);
                     SetString(xml, XmlPrefix + "FanProgramDefault", FanProgramDefault);
+                    SetString(xml, XmlPrefix + "FanProgramDefaultAlt", FanProgramDefaultAlt);
 
                     // Fan programs (again, so that the settings are
                     // sorted alphabetically for the user's convenience)
