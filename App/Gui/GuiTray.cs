@@ -259,9 +259,18 @@ namespace OmenMon.AppGui {
             if(this.UpdateProgramTick >= Config.UpdateProgramInterval)
                 this.UpdateProgramTick = 0;
 
-            // Update the program, if active
-            if(this.Op.Program.IsEnabled && this.UpdateProgramTick++ == 0) {
-                this.Op.Program.Update();
+            // Update the fan program or extend the countdown
+            if(this.UpdateProgramTick++ == 0) {
+
+                // Update the program, if active
+                if(this.Op.Program.IsEnabled)
+                    this.Op.Program.Update();
+
+                // Alternatively, update any non-zero countdown
+                // depending on the configuration settings
+                else if(Config.FanCountdownExtendAlways)
+                    this.Op.Program.UpdateCountdown(false, true);
+
             }
 
             // Update the main form, only if visible
