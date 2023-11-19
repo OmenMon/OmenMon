@@ -358,6 +358,7 @@ namespace OmenMon.Library.Locale {
 
                 // Program
                 ["Prog"] = "Program",
+                ["ProgAlt"] = "[Alt]",
                 ["ProgEnd"] = "Program Ended:",
                 ["ProgFans"] = "Fans",
                 ["ProgLvl"] = "Lvl",
