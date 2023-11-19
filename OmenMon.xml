@@ -75,13 +75,13 @@
         <FanLevelMax>55</FanLevelMax>
         <FanLevelMin>20</FanLevelMin>
 
+        <!-- Before setting fan levels, set manual
+             fan mode first using the Embedded Controller -->
+        <FanLevelNeedManual>false</FanLevelNeedManual>
+
         <!-- Use the Embedded Controller instead
              of a BIOS call for fan-level setting -->
         <FanLevelUseEc>false</FanLevelUseEc>
-
-        <!-- If using the Embedded Controller to set fan levels,
-             additionally also set manual fan mode first -->
-        <FanLevelUseEcNeedManual>false</FanLevelUseEcNeedManual>
 
         <!-- Default fan program, which might be loaded on startup
              (depending on the Autoconfig setting) -->
