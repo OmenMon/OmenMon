@@ -69,6 +69,10 @@ namespace OmenMon.Library {
             ErrorTask   = 4   // Invalid task identifier
         }
 
+        // Whether to always extend the fan countdown timer, even with no fan program
+        // running, or constant-speed button selected, and the main window hidden
+        public static bool FanCountdownExtendAlways = false;
+
         // Fan countdown extension threshold and interval [s]
         public static int FanCountdownExtendInterval = 120;
         public static int FanCountdownExtendThreshold = 5;
