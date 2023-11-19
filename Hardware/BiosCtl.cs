@@ -191,7 +191,8 @@ namespace OmenMon.Hardware.Bios {
         // Checks if memory overclocking is supported
         public byte HasMemoryOverclock() {
             byte[] outData;
-            Check(Send(Cmd.Default, 0x18, new byte[4] {0x00, 0x00, 0x00, 0x00}, 128, out outData));
+            // Do not check BIOS error status for this call, just assume no support
+            Send(Cmd.Default, 0x18, new byte[4] {0x00, 0x00, 0x00, 0x00}, 128, out outData);
             // Byte #2: 0x01 - Memory Overclocking Support (Observed: 0x00)
             return outData[2];
         }
@@ -199,7 +200,8 @@ namespace OmenMon.Hardware.Bios {
         // Checks if overclocking is supported
         public byte HasOverclock() {
             byte[] outData;
-            Check(Send(Cmd.Default, 0x35, new byte[4] {0x00, 0x00, 0x00, 0x00}, 128, out outData));
+            // Do not check BIOS error status for this call, just assume no support
+            Send(Cmd.Default, 0x35, new byte[4] {0x00, 0x00, 0x00, 0x00}, 128, out outData);
             // Byte #2: 0x00 - No Support (Observed: 0x03)
             return outData[2];
         }
@@ -207,7 +209,8 @@ namespace OmenMon.Hardware.Bios {
         // Checks if the BIOS supports undervolting
         public byte HasUndervoltBios() {
             byte[] outData;
-            Check(Send(Cmd.Default, 0x35, new byte[4] {0x00, 0x00, 0x00, 0x00}, 128, out outData));
+            // Do not check BIOS error status for this call, just assume no support
+            Send(Cmd.Default, 0x35, new byte[4] {0x00, 0x00, 0x00, 0x00}, 128, out outData);
             // Byte #2: 0x01 - BIOS Undervolting Support (Observed: 0x03)
             return outData[2];
         }
