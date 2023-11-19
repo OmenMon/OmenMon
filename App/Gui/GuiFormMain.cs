@@ -833,10 +833,12 @@ namespace OmenMon.AppGui {
                     + Context.Op.Platform.System.GetMfgDate() + " "
                 + Conv.RTF_CF5 + Context.Op.Platform.System.GetDefaultCpuPowerLimit4().ToString()
                     + Conv.RTF_CF1 + Config.Locale.Get(Config.L_UNIT + "Power") + " "
-                + Conv.RTF_CF1 + Config.Locale.Get(
-                    Config.L_GUI_MAIN + Gui.G_SYS + "Adapter"
+                + Conv.RTF_CF1 + (Context.Op.Platform.System.IsFullPower() ?
+                    Config.Locale.Get(Config.L_GUI_MAIN + Gui.G_SYS + "Adapter"
                         + Enum.GetName(typeof(BiosData.AdapterStatus),
-                    Context.Op.Platform.System.GetAdapterStatus())) + Conv.RTF_LINE
+                            Context.Op.Platform.System.GetAdapterStatus()))
+                    : Config.Locale.Get(Config.L_GUI_MAIN + Gui.G_SYS + "AdapterBatteryPower"))
+                    + Conv.RTF_LINE
                 + Conv.RTF_CF1 + Config.Locale.Get(Config.L_GUI_MAIN + Gui.G_SYS + "Gpu") + " " 
                     + Conv.RTF_CF5 + Enum.GetName(typeof(BiosData.GpuMode), Context.Op.Platform.System.GetGpuMode(true)) + " "
                 + Conv.RTF_CF1 + Config.Locale.Get(Config.L_GUI_MAIN + Gui.G_SYS + "GpuDState") + " "
