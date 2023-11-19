@@ -114,7 +114,8 @@ namespace OmenMon.Hardware.Platform {
                 return false;
 
             // Enable manual fan mode
-            Platform.Fans.SetManual(true);
+            if(Config.FanLevelNeedManual)
+                Platform.Fans.SetManual(true);
 
             // Set the state flag
             this.IsEnabled = true;
@@ -144,7 +145,8 @@ namespace OmenMon.Hardware.Platform {
             SetFanLevel(new byte[] { Byte.MaxValue, Byte.MaxValue } );
 
             // Disable manual fan mode
-            Platform.Fans.SetManual(false);
+            if(Config.FanLevelNeedManual)
+                Platform.Fans.SetManual(false);
 
             // Restore the previous fan mode
             UpdateFanMode(true, this.LastFanMode);

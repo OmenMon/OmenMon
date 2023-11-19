@@ -115,16 +115,36 @@ namespace OmenMon.Hardware.Platform {
 
         // Sets the levels of all fans at the same time
         public void SetLevels(byte[] levels) {
-            try {
-                // Make a WMI BIOS call to set the level of both fans
-                Hw.BiosSet(Hw.Bios.SetFanLevel, levels);
-            // If the call failed (status is always checked,
-            // regardless of Config.BiosErrorReporting)
-            } catch {
-                // Try to set the speed for each fan individually
+
+            // Set manual fan mode, if needed
+            if(Config.FanLevelNeedManual)
                 this.SetManual(true);
+
+            // Depending on the configuration setting,
+            // use either the BIOS or the EC to set levels
+            if(Config.FanLevelUseEc) {
+
+                // Try to set the speed for each fan individually
                 for(int i = 0; i < levels.Length; i++)
                     this.Fan[i].SetLevel(levels[i]);
+
+            } else {
+                try {
+
+                    // Make a WMI BIOS call to set the level of both fans
+                    Hw.BiosSet(Hw.Bios.SetFanLevel, levels);
+
+                } catch {
+
+                    // It has been reported on some models the settings
+                    // take effect anyway, despite a BIOS error returned
+
+                    // Thus, silently ignore if the call failed
+
+                    // Regardless of the Config.BiosErrorReporting value,
+                    // status is always checked, and reported in CLI mode
+
+                }
             }
         }
 
