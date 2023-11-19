@@ -80,6 +80,9 @@ namespace OmenMon.Library {
         // Whether to use the Embedded Controller instead of a BIOS call to set the fan level
         public static bool FanLevelUseEc = false;
 
+        // When setting fan levels using the Embedded Controller, additionally set manual mode first
+        public static bool FanLevelUseEcNeedManual = false;
+
         // Fan modes that should always be placed on top of the list
         // (the rest are legacy modes, irrelevant but kept for completeness)
         public static List<string> FanModesSticky = new List<string> { "Default", "Performance", "Cool" };

@@ -178,6 +178,9 @@ namespace OmenMon.Library {
                     if(GetBool(xml, XmlPrefix + "FanLevelUseEc", out flag))
                         FanLevelUseEc = flag;
 
+                    if(GetBool(xml, XmlPrefix + "FanLevelUseEcNeedManual", out flag))
+                        FanLevelUseEcNeedManual = flag;
+
                     FanProgramDefault =
                         GetString(xml, XmlPrefix + "FanProgramDefault");
 
@@ -377,6 +380,7 @@ namespace OmenMon.Library {
                     SetUInt(xml, XmlPrefix + "FanLevelMax", (uint) FanLevelMax);
                     SetUInt(xml, XmlPrefix + "FanLevelMin", (uint) FanLevelMin);
                     SetBool(xml, XmlPrefix + "FanLevelUseEc", FanLevelUseEc);
+                    SetBool(xml, XmlPrefix + "FanLevelUseEcNeedManual", FanLevelUseEcNeedManual);
                     SetString(xml, XmlPrefix + "FanProgramDefault", FanProgramDefault);
 
                     // Fan programs (again, so that the settings are
