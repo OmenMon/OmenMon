@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 using OmenMon.Hardware.Bios;
 using OmenMon.Library;
 
@@ -12,12 +13,15 @@ namespace OmenMon.Hardware.Platform {
     // Defines an interface for obtaining system information
     public interface ISettings {
 
-        // BIOS Raw data
+        // API queries
+        public bool IsFullPower();
+
+        // BIOS raw data
         public Nullable<BiosData.GpuMode> GpuMode { get; }
         public Nullable<BiosData.GpuPowerData> GpuPower { get; }
         public Nullable<BiosData.SystemData> SystemData { get; }
 
-        // BIOS Queries
+        // BIOS queries
         public BiosData.AdapterStatus GetAdapterStatus();  // Smart AC adapter status
         public byte GetDefaultCpuPowerLimit4();            // CPU Power Limit 4 default value
         public string GetMfgDate();                        // Manufacturing date
@@ -34,7 +38,7 @@ namespace OmenMon.Hardware.Platform {
         public BiosData.GpuPowerData GetGpuPower(bool forceUpdate = false);      // DState, Custom TGP & PPAB
         public void SetGpuPower(BiosData.GpuPowerData value);
 
-        // BIOS Keyboard queries
+        // BIOS keyboard queries
         public BiosData.Backlight GetKbdBacklight();            // Backlight status
         public bool GetKbdBacklightSupport();
         public void SetKbdBacklight(bool flag);
@@ -44,10 +48,10 @@ namespace OmenMon.Hardware.Platform {
         public void SetKbdColor(BiosData.ColorTable value);
         public BiosData.KbdType GetKbdType();                   // Keyboard type
 
-        // WMI Raw data
+        // WMI raw data
         public Dictionary<string, string> BaseBoard { get; }
 
-        // WMI Queries
+        // WMI queries
         public string GetManufacturer();  // Baseboard manufacturer name
         public string GetProduct();       // Baseboard product identifier
         public string GetSerial();        // Baseboard serial number
@@ -99,6 +103,12 @@ namespace OmenMon.Hardware.Platform {
             if(!this.BaseBoard.ContainsKey(WMI_BASEBOARD_VERSION))
                 this.BaseBoard[WMI_BASEBOARD_VERSION] = "?";
 
+        }
+
+        // Checks if the system is running with full power
+        // (AC power check now, can extend to smart AC adapter status)
+        public bool IsFullPower() {
+            return SystemInformation.PowerStatus.PowerLineStatus == PowerLineStatus.Online;
         }
 
         // Retrieves the smart AC adapter status
