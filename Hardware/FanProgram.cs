@@ -295,12 +295,22 @@ namespace OmenMon.Hardware.Platform {
         }
 
         // Updates the fan manual mode countdown, optionally only if necessary
-        public void UpdateCountdown(bool forceUpdate = false) {
+        public void UpdateCountdown(bool forceUpdate = false, bool skipZero = false) {
+            int countdown = 1;
+
+            // Avoid unnecessarily querying the countdown,
+            // if an update is being forced regardless
+            if(!forceUpdate)
+                countdown = this.Platform.Fans.GetCountdown();
+
+            // Optionally, do not update if no countdown
+            if(skipZero && countdown == 0)
+                return;
 
             // Skip if there still is enough time to do it
             // during the next update, unless forced not to
-            if((forceUpdate && this.Platform.Fans.GetCountdown() != 0)
-                || this.Platform.Fans.GetCountdown()
+            if(forceUpdate
+                || countdown
                     < (Config.UpdateProgramInterval
                         + Config.FanCountdownExtendThreshold))
 
