@@ -4,6 +4,7 @@
 
 using System;
 using System.Windows.Forms;
+using Microsoft.Win32;
 using OmenMon.Hardware.Bios;
 using OmenMon.Hardware.Ec;
 using OmenMon.Library;
@@ -109,6 +110,9 @@ namespace OmenMon.AppGui {
             if(Config.AutoConfig)
                 this.Op.AutoConfigRun();
 
+            // Register the power-mode change event handler
+            SystemEvents.PowerModeChanged += EventPowerChange;
+
         }
 
         // Handles component disposal
@@ -134,6 +138,9 @@ namespace OmenMon.AppGui {
             Application.RemoveMessageFilter(this.Filter);
             this.Filter = null;
 
+            // Unregister the power-mode change event handler
+            SystemEvents.PowerModeChanged -= EventPowerChange;
+
             // Terminate the fan program, if any
             if(this.Op.Program.IsEnabled)
                 this.Op.Program.Terminate();
@@ -152,6 +159,16 @@ namespace OmenMon.AppGui {
             // Note: right click is reserved for the context menu
             if(e.Button == MouseButtons.Left)
                 ToggleFormMain();
+
+        }
+
+        // Handles a power-mode change event
+        private void EventPowerChange(object sender, PowerModeChangedEventArgs e) {
+
+            // Only respond to status change events,
+            // which excludes Resume and Suspend
+            if(e.Mode == PowerModes.StatusChange)
+                this.Op.PowerChange();
 
         }
 
