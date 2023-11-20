@@ -117,7 +117,7 @@
                 <Level Temperature="63"><Cpu>34</Cpu><Gpu>37</Gpu></Level>
                 <Level Temperature="66"><Cpu>36</Cpu><Gpu>40</Gpu></Level>
                 <Level Temperature="69"><Cpu>38</Cpu><Gpu>43</Gpu></Level>
-                <Level Temperature="62"><Cpu>41</Cpu><Gpu>46</Gpu></Level>
+                <Level Temperature="72"><Cpu>41</Cpu><Gpu>46</Gpu></Level>
                 <Level Temperature="75"><Cpu>44</Cpu><Gpu>49</Gpu></Level>
                 <Level Temperature="78"><Cpu>47</Cpu><Gpu>52</Gpu></Level>
                 <Level Temperature="81"><Cpu>50</Cpu><Gpu>55</Gpu></Level>
