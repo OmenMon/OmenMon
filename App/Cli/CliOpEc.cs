@@ -68,7 +68,7 @@ namespace OmenMon.AppCli {
 
         // Prints out the values of all Embedded Controller registers in a table format
         private static void EcGetTable() {
-            Cli.PrintColor((ConsoleColor) Cli.Color.TableHeader, "0x _0 _1 _2 _3 _4 _5 _6 _7 _8 _9 _A _B _C _D _E _F" + Environment.NewLine);
+            Cli.PrintColor((ConsoleColor) Cli.Color.TableHeader, "0x _0 _1 _2 _3 _4 _5 _6 _7 _8 _9 _a _b _c _d _e _f" + Environment.NewLine);
             for(int high = 0; high <= 0xF0; high += 0x10) {
                 Cli.PrintColor((ConsoleColor) Cli.Color.TableHeader, Convert.ToString(high >> 4, 16) + "_ ");
                 for(int low = 0; low <= 0xF; low++) {
