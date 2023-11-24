@@ -612,9 +612,15 @@ namespace OmenMon.AppGui {
             label.Text = captionLocalized == captionLocaleId ?
                 captionOriginal : captionLocalized;
 
-            // Set up the tool tip
-            this.Tip.SetToolTip(label, Config.Locale.Get(Config.L_GUI_TIP + Gui.G_TMP + captionOriginal));
-            this.Tip.SetToolTip(labelValue, Config.Locale.Get(Config.L_GUI_TIP + Gui.G_TMP + captionOriginal));
+            // Check if a specific localized tooltip is available,
+            // and set it; otherwise use the default fallback tooltip
+            string toolTipLocaleId = Config.L_GUI_TIP + Gui.G_TMP + captionOriginal;
+            string toolTipLocalized = Config.Locale.Get(toolTipLocaleId);
+            string toolTip = toolTipLocalized != toolTipLocaleId ?
+                toolTipLocalized : Config.Locale.Get(Config.L_GUI_TIP + Gui.G_TMP + "Unknown");
+
+            this.Tip.SetToolTip(label, toolTip);
+            this.Tip.SetToolTip(labelValue, toolTip);
 
         }
 #endregion
