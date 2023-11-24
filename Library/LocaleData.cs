@@ -37,6 +37,8 @@ namespace OmenMon.Library.Locale {
                 ["CliBiosAdapter"] = "Smart Power Adapter Status",
                 ["CliBiosAnim"] = "LED Animation Table",
                 ["CliBiosBacklight"] = "Keyboard Backlight",
+                ["CliBiosBornDate"] = "Born-On Date",
+                ["CliBiosBornDateNote"] = "YYYYMMDD",
                 ["CliBiosColor"] = "Keyboard Backlight Color Table",
                 ["CliBiosColorZones"] = "Zones",
                 ["CliBiosCpuPowerLimit1"] = "CPU Power Limit 1",
@@ -63,8 +65,6 @@ namespace OmenMon.Library.Locale {
                 ["CliBiosHasUndervolt"] = "BIOS Undervolt Support",
                 ["CliBiosIdle"] = "Idle Mode",
                 ["CliBiosKbdType"] = "Keyboard Type",
-                ["CliBiosMfgDate"] = "Manufacturing (Born-On) Date",
-                ["CliBiosMfgDateNote"] = "YYYYMMDD",
                 ["CliBiosSystem"] = "System Design Data",
                 ["CliBiosSystemBiosOc"] = "BIOS-Defined Overclocking",
                 ["CliBiosSystemDefaultCpuPowerLimit4"] = "Default CPU Power Limit 4",
@@ -122,7 +122,7 @@ namespace OmenMon.Library.Locale {
                     "<BiosOp>" + Environment.NewLine +
                     "  Cpu:PL1=<Byte> Cpu:PL4=<Byte> Cpu:PLGpu=<Byte> Gpu[=<GpuPreset>] GpuMode[=<GpuMode>] Xmp=<Flag>" + Environment.NewLine +
                     "  FanCount FanLevel[=<FanLevel>] FanMax[=<Flag>] FanMode=<FanMode> FanTable[=<FanTable>] FanType" + Environment.NewLine +
-                    "  Idle[=<Flag>] Temp Throttling MfgDate System Adapter HasOverclock HasMemoryOverclock HasUndervolt" + Environment.NewLine +
+                    "  Idle[=<Flag>] Temp Throttling BornDate System Adapter HasOverclock HasMemoryOverclock HasUndervolt" + Environment.NewLine +
                     "  KbdType HasBacklight Backlight[=<Flag>] Color[=<Color>] Anim[=<ByteArray>]" + Environment.NewLine +
                     "<Data>" + Environment.NewLine +
                     "{1}" +
@@ -166,13 +166,13 @@ namespace OmenMon.Library.Locale {
                 ["GuiMainKbdColorPresetDelNoSel"] = "No preset selected",
                 ["GuiMainKbdColorPresetDelPrompt"] = "Delete",
                 ["GuiMainSys"] = "System Status & Information",
-                ["GuiMainSysMfg"] = "Mfg",
                 ["GuiMainSysAdapterNotSupported"] = Conv.RTF_CF1 + "AC Unknown",
                 ["GuiMainSysAdapterMeetsRequirement"] = Conv.RTF_CF3 + "AC Power OK",
                 ["GuiMainSysAdapterBelowRequirement"] = Conv.RTF_CF4 + "AC Power Low",
                 ["GuiMainSysAdapterBatteryPower"] = Conv.RTF_CF1 + "No AC Power",
                 ["GuiMainSysAdapterNotFunctioning"] = Conv.RTF_CF4 + "AC Fail",
                 ["GuiMainSysAdapterError"] = Conv.RTF_CF4 + "AC Error",
+                ["GuiMainSysBorn"] = "*",
                 ["GuiMainSysGpu"] = "GPU",
                 ["GuiMainSysGpuPpab"] = "PPAB",
                 ["GuiMainSysGpuCustomTgp"] = "cTGP",
