@@ -16,17 +16,15 @@ namespace OmenMon.Hardware.Platform {
         // Last maximum temperature reading
         public byte LastMaxTemperature { get; private set; }
 
-        // Number of temperature sensors
-        public const int TEMPERATURE_COUNT = 9;
-
         // System information
         public ISettings System { get; private set; }
 
         // Fan sensors and controls
         public IFanArray Fans { get; private set; }
 
-        // Temperature sensor array
+        // Temperature sensor array and which of these values are used
         public IPlatformReadComponent[] Temperature { get; private set; }
+        public bool[] TemperatureUse { get; private set; }
 #endregion
 
 #region Initialization
@@ -47,7 +45,7 @@ namespace OmenMon.Hardware.Platform {
         // Initializes the fan controls
         private void InitFans() {
 
-            // Fan array is product-dependent
+            // Fan array can be product-specific
             switch(this.System.GetProduct()) {
 
                 case "?": // Default
@@ -126,28 +124,34 @@ namespace OmenMon.Hardware.Platform {
         // Initializes the temperature controls
         private void InitTemperature() {
 
-            // Temperature sensor array is product-dependent
-            switch(this.System.GetProduct()) {
+            // Set up the temperature sensor array based on the configuration data
+            this.Temperature = new IPlatformReadComponent[Config.TemperatureSensor.Count];
+            this.TemperatureUse = new bool[Config.TemperatureSensor.Count];
 
-                case "?": // Default
-                case "8A13":
-                case "8A14":
-                default:
-                    this.Temperature = new IPlatformReadComponent[TEMPERATURE_COUNT];
-                    this.Temperature[0] = new EcComponent((byte) EmbeddedControllerData.Register.CPUT, Config.MaxBelievableTemperature);
-                    this.Temperature[1] = new EcComponent((byte) EmbeddedControllerData.Register.GPTM, Config.MaxBelievableTemperature);
-                    this.Temperature[2] = new WmiBiosTemperatureComponent(Config.MaxBelievableTemperature);
-                    this.Temperature[3] = new EcComponent((byte) EmbeddedControllerData.Register.RTMP, Config.MaxBelievableTemperature);
-                    this.Temperature[4] = new EcComponent((byte) EmbeddedControllerData.Register.TMP1, Config.MaxBelievableTemperature);
-                    this.Temperature[5] = new EcComponent((byte) EmbeddedControllerData.Register.TNT2, 97); // See note below
-                    this.Temperature[6] = new EcComponent((byte) EmbeddedControllerData.Register.TNT3, Config.MaxBelievableTemperature);
-                    this.Temperature[7] = new EcComponent((byte) EmbeddedControllerData.Register.TNT4, Config.MaxBelievableTemperature);
-                    this.Temperature[8] = new EcComponent((byte) EmbeddedControllerData.Register.TNT5, Config.MaxBelievableTemperature);
-                    break;
+            // Populate the temperature sensor array
+            int i = 0;
+            foreach(string name in Config.TemperatureSensor.Keys) {
 
-                    // Note: Reddit user @ManuSC12 reports TNT2 sensor is permanently stuck at 98°C in his model,
-                    // making it impossible to use fan programs: the long-term solution is to add a different case
-                    // above for his model number but since he did not state it, lower the threshold in the meantime
+                // Set whether the sensor can be used for maximum temperature
+                this.TemperatureUse[i] = Config.TemperatureSensor[name].Use;
+
+                // Process each sensor loaded from the configuration
+                switch(Config.TemperatureSensor[name].Source) {
+
+                    // Add an Embedded Controller sensor
+                    case PlatformData.LinkType.EmbeddedController:
+                        this.Temperature[i++] = new EcComponent(
+                            Config.TemperatureSensor[name].Register,
+                            Config.MaxBelievableTemperature);
+                        break;
+
+                    // Add a WMI BIOS sensor
+                    case PlatformData.LinkType.WmiBios:
+                        this.Temperature[i++] =
+                            new WmiBiosTemperatureComponent(Config.MaxBelievableTemperature);
+                        break;
+
+                }
 
             }
 
@@ -161,18 +165,20 @@ namespace OmenMon.Hardware.Platform {
             // Update the platform temperature readings first
             // if forced to do so
             if(forceUpdate)
-                UpdateTemperature();
+                UpdateTemperature(true);
 
             // Reset the state
             this.LastMaxTemperature = 0;
             byte value;
 
             // Iterate through the platform temperature array
-            for(int i = 0; i < Temperature.Length; i++)
+            for(int i = 0; i < this.Temperature.Length; i++)
 
                 // Obtain the reading from each temperature sensor
                 // If the value is higher than the current candidate
-                if((value = (byte) Temperature[i].GetValue()) > this.LastMaxTemperature)
+                if(this.TemperatureUse[i] // Ignore certain sensors
+                    && (value = (byte) this.Temperature[i].GetValue())
+                        > this.LastMaxTemperature)
 
                     // Update the candidate
                     this.LastMaxTemperature = value;
@@ -203,9 +209,10 @@ namespace OmenMon.Hardware.Platform {
         }
 
         // Updates the temperature readings
-        public void UpdateTemperature() {
+        public void UpdateTemperature(bool onlyUsed = false) {
             for(int i = 0; i < Temperature.Length; i++)
-                this.Temperature[i].Update();
+                if(!onlyUsed || this.TemperatureUse[i])
+                    this.Temperature[i].Update();
         }
 #endregion
 
