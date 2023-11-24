@@ -40,7 +40,7 @@ namespace OmenMon.AppCli {
                         // Run all the operations that do not make any changes
                         Loop(new string[] {
                             "-Bios",
-                            "MfgDate", "System", "Gpu", "GpuMode", "Adapter",
+                            "BornDate", "System", "Gpu", "GpuMode", "Adapter",
                             "HasOverclock", "HasMemoryOverclock", "HasUndervolt",
                             "KbdType", "HasBacklight", "Backlight", "Color", "Anim",
                             "FanCount", "FanMax", "FanType", "FanLevel", "FanTable", "Temp", "Throttling"});
@@ -167,6 +167,11 @@ namespace OmenMon.AppCli {
                                         BiosGet<BiosData.Backlight>(Config.Locale.Get(Config.L_CLI_BIOS + "Backlight"), Hw.Bios.GetBacklight);
                                         break;
 
+                                    // Retrieve the "Born-on Date" (BOD)
+                                    case "borndate":
+                                        BiosGet(Config.Locale.Get(Config.L_CLI_BIOS + "BornDate"), Hw.Bios.GetBornDate, Config.Locale.Get(Config.L_CLI_BIOS + "BornDateNote"));
+                                        break;
+
                                     // Retrieve and interpret the keyboard backlight color table
                                     case "color":
                                         BiosGetStruct<BiosData.ColorTable>(Config.Locale.Get(Config.L_CLI_BIOS + "Color"), Hw.Bios.GetColorTable);
@@ -230,11 +235,6 @@ namespace OmenMon.AppCli {
                                     // Retrieve and interpret the keyboard type
                                     case "kbdtype":
                                         BiosGet<BiosData.KbdType>(Config.Locale.Get(Config.L_CLI_BIOS + "KbdType"), Hw.Bios.GetKbdType);
-                                        break;
-
-                                    // Retrieve the manufacturing date, aka the "Born-on Date" (BOD)
-                                    case "mfgdate":
-                                        BiosGet(Config.Locale.Get(Config.L_CLI_BIOS + "MfgDate"), Hw.Bios.GetMfgDate, Config.Locale.Get(Config.L_CLI_BIOS + "MfgDateNote"));
                                         break;
 
                                     // Retrieve and interpret the system design data
