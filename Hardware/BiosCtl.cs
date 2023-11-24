@@ -28,8 +28,8 @@ namespace OmenMon.Hardware.Bios {
         // Capability Query
 
         public BiosData.AdapterStatus GetAdapter();
+        public string GetBornDate();
         public BiosData.KbdType GetKbdType();
-        public string GetMfgDate();
         public BiosData.SystemData GetSystem();
 
         public bool HasBacklight();
@@ -152,6 +152,14 @@ namespace OmenMon.Hardware.Bios {
             return (AdapterStatus) (byte) outData[0];
         }
 
+        // Retrieves the "Born-on Date" (BOD)
+        public string GetBornDate() {
+            byte[] outData;
+            Check(Send(Cmd.Legacy, 0x10, null, 128, out outData));
+            // Bytes #0-#7: ASCII String "YYYYMMDD"
+            return System.Text.Encoding.ASCII.GetString(outData, 0, 8);
+        }
+
         // Retrieves the keyboard type
         public KbdType GetKbdType() {
             byte[] outData;
@@ -159,14 +167,6 @@ namespace OmenMon.Hardware.Bios {
             Send(Cmd.Default, 0x2B, new byte[4] {0x00, 0x00, 0x00, 0x00}, 4, out outData);
             // See: KbdType (enum)
             return (KbdType) outData[0];
-        }
-
-        // Retrieves the manufacturing date, aka "Born-on Date" (BOD)
-        public string GetMfgDate() {
-            byte[] outData;
-            Check(Send(Cmd.Legacy, 0x10, null, 128, out outData));
-            // Bytes #0-#7: ASCII String "YYYYMMDD"
-            return System.Text.Encoding.ASCII.GetString(outData, 0, 8);
         }
 
         // Retrieves the system design data

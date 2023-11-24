@@ -23,8 +23,8 @@ namespace OmenMon.Hardware.Platform {
 
         // BIOS queries
         public BiosData.AdapterStatus GetAdapterStatus();  // Smart AC adapter status
+        public string GetBornDate();                       // "Born-on" date
         public byte GetDefaultCpuPowerLimit4();            // CPU Power Limit 4 default value
-        public string GetMfgDate();                        // Manufacturing date
         public BiosData.SystemData GetSystemData();        // System information from the BIOS
         public BiosData.Throttling GetThrottling();        // Whether the system is throttling
 
@@ -72,7 +72,7 @@ namespace OmenMon.Hardware.Platform {
         public Dictionary<string, string> BaseBoard { get; private set; }
 
         // BIOS raw information
-        private string MfgDate;
+        private string BornDate;
         public Nullable<BiosData.GpuMode> GpuMode { get; private set; }
         public Nullable<BiosData.GpuPowerData> GpuPower { get; private set; }
         public Nullable<BiosData.KbdType> KbdType { get; private set; }
@@ -82,7 +82,7 @@ namespace OmenMon.Hardware.Platform {
         public Settings() {
 
             // Set cached data to initial values
-            this.MfgDate = "";
+            this.BornDate = "";
             this.GpuMode = null;
             this.GpuPower = null;
             this.SystemData = null;
@@ -114,6 +114,13 @@ namespace OmenMon.Hardware.Platform {
         // Retrieves the smart AC adapter status
         public BiosData.AdapterStatus GetAdapterStatus() {
             return Hw.BiosGet<BiosData.AdapterStatus>(Hw.Bios.GetAdapter);
+        }
+
+        // Retrieves the "born-on" date
+        public string GetBornDate() {
+            if(this.BornDate == "")
+                this.BornDate = Hw.BiosGet(Hw.Bios.GetBornDate);
+            return this.BornDate;
         }
 
         // Retrieves the default CPU Power Limit 4 value
@@ -223,13 +230,6 @@ namespace OmenMon.Hardware.Platform {
         // Retrieves the baseboard manufacturer name
         public string GetManufacturer() {
             return this.BaseBoard[WMI_BASEBOARD_MANUFACTURER];
-        }
-
-        // Retrieves the manufacturing date
-        public string GetMfgDate() {
-            if(this.MfgDate == "")
-                this.MfgDate = Hw.BiosGet(Hw.Bios.GetMfgDate);
-            return this.MfgDate;
         }
 
         // Retrieves the baseboard product identifier
