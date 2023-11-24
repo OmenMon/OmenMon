@@ -101,6 +101,10 @@ namespace OmenMon.Library {
         // Default alternative fan program when the system is not on AC power
         public static string FanProgramDefaultAlt; // Unset by default
 
+        // Whether to check first (using the EC) if the fan mode is not set already
+        // before setting it (using a BIOS WMI call) when a fan program is running
+        public static bool FanProgramModeCheckFirst = true;
+
         // Configuration XML file path
         public static string FilePath = "";
 
