@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using OmenMon.Hardware.Bios;
+using OmenMon.Hardware.Ec;
 using OmenMon.Hardware.Platform;
 using OmenMon.Library.Locale;
 
@@ -294,6 +295,101 @@ namespace OmenMon.Library {
         public static string TaskRunPath = Environment.GetEnvironmentVariable(EnvVarSysRoot) + "\\System32\\schtasks.exe";
         public const string TaskRunArgs = "/run /tn ";
 
+        // Structure to hold temperature sensor information
+        public struct TemperatureSensorData {
+
+            // Resolved numerical value
+            // to be passed to the source
+            public byte Register;
+
+            // Where the data originates from
+            public PlatformData.LinkType Source;
+
+            // Whether the sensor is used
+            // or only being displayed
+            public bool Use;
+
+            // Constructor with all parameters
+            public TemperatureSensorData(
+                PlatformData.LinkType source,
+                byte register = 0,
+                bool use = true) {
+
+                // Do not accept empty register values
+                // if the source is the Embedded Controller
+                if(source == PlatformData.LinkType.EmbeddedController
+                    && register == 0)
+
+                    // Throw an exception if that is the case
+                    throw new ArgumentOutOfRangeException();
+
+                // Set the structure data
+                this.Source = source;
+                this.Register = register;
+                this.Use = use;
+
+            }
+
+            // Constructor with no register
+            public TemperatureSensorData(
+                PlatformData.LinkType source,
+                bool use = true) : this(source, 0, use) { }
+
+        }
+
+        // Temperature sensors (overriden at runtime if found in the configuration file)
+        public static Dictionary<string, TemperatureSensorData> TemperatureSensor =
+            new Dictionary<string, TemperatureSensorData> {
+
+                // CPU temperature
+                ["CPUT"] = new TemperatureSensorData(
+                    PlatformData.LinkType.EmbeddedController,
+                    (byte) EmbeddedControllerData.Register.CPUT),
+
+                // GPU temperature
+                ["GPTM"] = new TemperatureSensorData(
+                    PlatformData.LinkType.EmbeddedController,
+                    (byte) EmbeddedControllerData.Register.GPTM),
+
+                // Temperature reported by the BIOS
+                // (values more or less a third lower than other readings,
+                // thus currently makes no sense to use for maximum check)
+                ["BIOS"] = new TemperatureSensorData(
+                    PlatformData.LinkType.WmiBios, false),
+
+                // Platform Controller Hub temperature
+                ["RTMP"] = new TemperatureSensorData(
+                    PlatformData.LinkType.EmbeddedController,
+                    (byte) EmbeddedControllerData.Register.RTMP),
+
+                // Memory temperature
+                ["TMP1"] = new TemperatureSensorData(
+                    PlatformData.LinkType.EmbeddedController,
+                    (byte) EmbeddedControllerData.Register.TMP1),
+
+                // Auxilliary EC temperature probe #2
+                ["TNT2"] = new TemperatureSensorData(
+                    PlatformData.LinkType.EmbeddedController,
+                    (byte) EmbeddedControllerData.Register.TNT2),
+
+                // Auxilliary EC temperature probe #3
+                ["TNT3"] = new TemperatureSensorData(
+                    PlatformData.LinkType.EmbeddedController,
+                    (byte) EmbeddedControllerData.Register.TNT3),
+
+                // Auxilliary EC temperature probe #4
+                ["TNT4"] = new TemperatureSensorData(
+                    PlatformData.LinkType.EmbeddedController,
+                    (byte) EmbeddedControllerData.Register.TNT4),
+
+                // Auxilliary EC temperature probe #5
+                ["TNT5"] = new TemperatureSensorData(
+                    PlatformData.LinkType.EmbeddedController,
+                    (byte) EmbeddedControllerData.Register.TNT5) };
+
+        // Maximum number of temperature sensors
+        public const int TemperatureSensorMax = 9;
+
         // Timestamp format in fan program status messages
         public const string TimestampFormat = "HH:mm:ss";
 
@@ -341,9 +437,16 @@ namespace OmenMon.Library {
         private const string XmlElementFanProgramLevel = "Level";
         private const string XmlElementFanProgramLevelCpu = "Cpu";
         private const string XmlElementFanProgramLevelGpu = "Gpu";
+        private const string XmlElementTemperature = "Temperature";
+        private const string XmlElementTemperatureSensor = "Sensor";
         private const string XmlAttrColorPresetName = "Name";
         private const string XmlAttrFanProgramName = "Name";
         private const string XmlAttrFanProgramLevelTemperature = "Temperature";
+        private const string XmlAttrTemperatureSensorName = "Name";
+        private const string XmlAttrTemperatureSensorSource = "Source";
+        private const string XmlAttrTemperatureSensorSourceValueBios = "BIOS";
+        private const string XmlAttrTemperatureSensorSourceValueEc = "EC";
+        private const string XmlAttrTemperatureSensorUse = "Use";
         private const string XmlElementConfig = "Config";
         private const string XmlElementKeyCustomAction = "KeyCustomAction";
 
@@ -354,6 +457,8 @@ namespace OmenMon.Library {
         private static string XmlPrefixFanPrograms = XmlPrefix + XmlElementFanPrograms + "/"; // Slash
         private static string XmlPrefixFanProgram = XmlPrefixFanPrograms + XmlElementFanProgram; // No slash
         private static string XmlPrefixKeyCustomAction = XmlPrefix + XmlElementKeyCustomAction + "/"; // Slash
+        private static string XmlPrefixTemperature = XmlPrefix + XmlElementTemperature + "/"; // Slash
+        private static string XmlPrefixTemperatureSensor = XmlPrefixTemperature + XmlElementTemperatureSensor; // No slash
 
         // Whether to skip the annoying Byte Order Mark (BOM) when saving the XML configuration
         private const bool XmlSaveBom = false;

@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using System.Text;
 using System.Xml;
 using OmenMon.Hardware.Bios;
+using OmenMon.Hardware.Ec;
 using OmenMon.Hardware.Platform;
 using OmenMon.Library.Locale;
 
@@ -277,6 +278,59 @@ namespace OmenMon.Library {
                         + Conv.GetColorStringRtf(GuiColorWarmLite)                // Fuchsia
                         + "}";
 
+                    // Load the temperature sensors
+                    bool usable = false;
+                    Dictionary<string, TemperatureSensorData> TemperatureSensorXml
+                        = new Dictionary<string, TemperatureSensorData>();
+                    foreach(XmlNode node in xml.SelectNodes(XmlPrefixTemperatureSensor)) {
+                        // Invalid entries will be discarded at this step
+                        try {
+
+                            // Abort if more than the maximum number of sensors defined already
+                            if(TemperatureSensorXml.Count >= TemperatureSensorMax)
+                                break;
+
+                            // Set the optional use flag
+                            // based on the XML attribute
+                            bool use = true;
+                            try {
+                                Conv.GetBool(node.Attributes[XmlAttrTemperatureSensorUse].Value, out use);
+                            } catch {  }
+
+                            // Check for Embedded Controller sensor source
+                            if(node.Attributes[XmlAttrTemperatureSensorSource].Value
+                                == XmlAttrTemperatureSensorSourceValueEc)
+
+                                // Adding a sensor sourced from the Embedded Controller
+                                TemperatureSensorXml[node.Attributes[XmlAttrTemperatureSensorName].Value] =
+                                    new TemperatureSensorData(
+                                        PlatformData.LinkType.EmbeddedController,
+                                        (byte) Enum.Parse(typeof(EmbeddedControllerData.Register),
+                                            node.Attributes[XmlAttrTemperatureSensorName].Value), use);
+
+                            // Check for WMI BIOS sensor source
+                            else if(node.Attributes[XmlAttrTemperatureSensorSource].Value
+                                == XmlAttrTemperatureSensorSourceValueBios)
+
+                                // Adding a sensor sourced from the WMI BIOS
+                                TemperatureSensorXml[XmlAttrTemperatureSensorSourceValueBios] =
+                                    new TemperatureSensorData(PlatformData.LinkType.WmiBios, use);
+
+                            // Throw an exception for any unknown sources
+                            else throw new ArgumentOutOfRangeException();
+
+                            // Record found usable
+                            if(use) usable = true;
+
+                        } catch { }
+
+                    }
+
+                    // Replace the defaults with configured temperature sensors unless none
+                    // were configured or not a single sensor was set to actually be used
+                    if(TemperatureSensorXml.Count > 0 && usable)
+                        TemperatureSensor = TemperatureSensorXml;
+
                     // Load the fan programs
                     foreach(XmlNode node in xml.SelectNodes(XmlPrefixFanProgram)) {
                         // Invalid entries will be discarded at this step
@@ -444,7 +498,7 @@ namespace OmenMon.Library {
 
                     }
 
-                    // The remaining configuration values
+                    // Continue with the configuration values
                     SetString(xml, XmlPrefix + "GpuPowerDefault", GpuPowerDefault);
                     SetUInt(xml, XmlPrefix + "GpuPowerSetInterval", (uint) GpuPowerSetInterval);
                     SetBool(xml, XmlPrefix + "GuiCloseWindowExit", GuiCloseWindowExit);
@@ -461,6 +515,33 @@ namespace OmenMon.Library {
                     SetBool(xml, XmlPrefix + "KeyToggleFanProgram", KeyToggleFanProgram);
                     SetUInt(xml, XmlPrefix + "PresetRefreshRateHigh", (uint) PresetRefreshRateHigh);
                     SetUInt(xml, XmlPrefix + "PresetRefreshRateLow", (uint) PresetRefreshRateLow);
+
+                    // Temperature sensors (alphabetical order maintained)
+                    // Ensure the parent element node exists, or create it
+                    XmlElement xmlTemperature = (XmlElement) SetPath(xml, XmlPrefixTemperature);
+
+                    // Remove all currently-defined sensor entries
+                    xmlTemperature.RemoveAll();
+
+                    // Iterate through the sensor entries
+                    foreach(string name in TemperatureSensor.Keys) {
+
+                        // Create an element for each sensor
+                        XmlElement node = (XmlElement) xmlTemperature.AppendChild(
+                                xml.CreateElement(XmlElementTemperatureSensor));
+
+                        // Store the preset name and source in attributes
+                        node.SetAttribute(XmlAttrTemperatureSensorName, name);
+                        node.SetAttribute(XmlAttrTemperatureSensorSource,
+                            TemperatureSensor[name].Source == PlatformData.LinkType.EmbeddedController ?
+                                XmlAttrTemperatureSensorSourceValueEc : XmlAttrTemperatureSensorSourceValueBios);
+
+                        if(!TemperatureSensor[name].Use)
+                            node.SetAttribute(XmlAttrTemperatureSensorUse, XmlSaveBoolFalse);
+
+                    }
+
+                    // The remaining configuration values
                     SetUInt(xml, XmlPrefix + "UpdateIconInterval", (uint) UpdateIconInterval);
                     SetUInt(xml, XmlPrefix + "UpdateMonitorInterval", (uint) UpdateMonitorInterval);
                     SetUInt(xml, XmlPrefix + "UpdateProgramInterval", (uint) UpdateProgramInterval);
