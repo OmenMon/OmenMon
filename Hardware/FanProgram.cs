@@ -201,7 +201,9 @@ namespace OmenMon.Hardware.Platform {
             SetFanLevel(fans);
 
             // Perform other updates, only if necessary
-            UpdateFanMode();
+            // or, in case of the fan mode, configured to do so
+            // without checking, so as to reduce the EC burden
+            UpdateFanMode(!Config.FanProgramModeCheckFirst);
             UpdateGpuPower();
             UpdateCountdown();
 
