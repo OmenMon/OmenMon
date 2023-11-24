@@ -281,6 +281,7 @@ namespace OmenMon.Library.Locale {
                 ["GuiTipTmpTNT3"] = "Storage",
                 ["GuiTipTmpTNT4"] = "Storage",
                 ["GuiTipTmpTNT5"] = "Interpretation Unknown",
+                ["GuiTipTmpUnknown"] = "Custom Sensor",
                 ["GuiTipTxtInput"] = "Enter the value",
 
                 // Data formats
