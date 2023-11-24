@@ -273,7 +273,7 @@ namespace OmenMon.Library.Locale {
                 ["GuiTipSys"] = "System status information is shown here",
                 ["GuiTipTmpCPUT"] = "CPU Temperature",
                 ["GuiTipTmpGPTM"] = "GPU Temperature",
-                ["GuiTipTmpBIOS"] = "Temperature reported by the BIOS" + Environment.NewLine + "Values observed are much lower than for any other sensor",
+                ["GuiTipTmpBIOS"] = "Temperature reported by the BIOS" + Environment.NewLine + "Values observed are much lower" + Environment.NewLine + "than for any other sensor",
                 ["GuiTipTmpIRSN"] = "Infrared Sensor Temperature",
                 ["GuiTipTmpRTMP"] = "Platform Controller Hub Temperature",
                 ["GuiTipTmpTMP1"] = "Memory Temperature",
