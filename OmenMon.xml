@@ -208,6 +208,22 @@
         <!-- Standard display refresh rate preset value [Hz] -->
         <PresetRefreshRateLow>60</PresetRefreshRateLow>
 
+        <!-- Temperature Sensors -->
+
+        <!-- Note: nine default sensors are hard-coded in the application
+             and will be used instead if none are defined here -->
+        <Temperature>
+            <Sensor Name="CPUT" Source="EC" />
+            <Sensor Name="GPTM" Source="EC" />
+            <Sensor Name="BIOS" Source="BIOS" Use="false" />
+            <Sensor Name="RTMP" Source="EC" />
+            <Sensor Name="TMP1" Source="EC" />
+            <Sensor Name="TNT2" Source="EC" />
+            <Sensor Name="TNT3" Source="EC" />
+            <Sensor Name="TNT4" Source="EC" />
+            <Sensor Name="TNT5" Source="EC" />
+        </Temperature>
+
         <!-- Update Interval -->
 
         <!-- How often the dynamic notification icon is updated [s] -->
