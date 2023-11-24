@@ -608,6 +608,10 @@ namespace OmenMon.AppGui {
             Label labelValue =
                 ((Label) this.GrpTmp.Controls[this.GrpTmp.Controls.IndexOf(label) + 1]);
 
+            // Strike-through sensors set not to be used
+            if(!Context.Op.Platform.TemperatureUse[index])
+                label.Font = new Font(label.Font, FontStyle.Strikeout);
+
             // Determine the best caption and apply it
             label.Text = captionLocalized == captionLocaleId ?
                 captionOriginal : captionLocalized;
