@@ -104,7 +104,7 @@ namespace OmenMon.Library {
 
         // Whether to check first (using the EC) if the fan mode is not set already
         // before setting it (using a BIOS WMI call) when a fan program is running
-        public static bool FanProgramModeCheckFirst = true;
+        public static bool FanProgramModeCheckFirst = false;
 
         // Configuration XML file path
         public static string FilePath = "";
