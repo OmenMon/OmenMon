@@ -99,7 +99,7 @@
 
         <!-- Check first (using the EC) if the fan mode is not set already
              before setting it (using a BIOS WMI call) during a fan program
-             (if false, makes two EC operations less every UpdateProgramInterval,
+             (if false, makes three EC operations fewer every UpdateProgramInterval,
              at the cost of one more WMI BIOS call: can be used to reduce EC load) -->
         <FanProgramModeCheckFirst>false</FanProgramModeCheckFirst>
 
