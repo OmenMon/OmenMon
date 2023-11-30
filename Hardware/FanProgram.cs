@@ -197,7 +197,7 @@ namespace OmenMon.Hardware.Platform {
                 + Config.Locale.Get(Config.L_PROG + "Fans") + " "
                 + Conv.GetString(fans[0], 2, 10) + ", " + Conv.GetString(fans[1], 2, 10));
 
-            // Set the fan level
+            // Set fan levels
             SetFanLevel(fans);
 
             // Perform other updates, only if necessary
@@ -205,7 +205,11 @@ namespace OmenMon.Hardware.Platform {
             // without checking, so as to reduce the EC burden
             UpdateFanMode(!Config.FanProgramModeCheckFirst);
             UpdateGpuPower();
-            UpdateCountdown();
+
+            // Fan-mode setting resets the countdown,
+            // thus no need to update in such case
+            if(Config.FanProgramModeCheckFirst)
+                UpdateCountdown();
 
             // Report success
             return true;
