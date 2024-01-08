@@ -1,5 +1,5 @@
   //\\   OmenMon: Hardware Monitoring & Control Utility
- //  \\  Copyright © 2023 Piotr Szczepański * License: GPL3
+ //  \\  Copyright © 2023-2024 Piotr Szczepański * License: GPL3
      //  https://omenmon.github.io/
 
 using System;
@@ -70,6 +70,10 @@ namespace OmenMon.Hardware.Platform {
 
         // WMI raw information
         public Dictionary<string, string> BaseBoard { get; private set; }
+
+        // BIOS cached capabilities
+        private Nullable<bool> KbdBacklightSupport;
+        private Nullable<bool> KbdColorSupport;
 
         // BIOS raw information
         private string BornDate;
@@ -184,11 +188,16 @@ namespace OmenMon.Hardware.Platform {
 
         // Checks whether keyboard backlight toggling is supported
         public bool GetKbdBacklightSupport() {
-            // Per-key RGB keyboards currently not supported,
-            // as well as any devices that report no backlight
-            // (or if the BIOS call fails when trying to query)
-            return GetKbdType() != BiosData.KbdType.PerKeyRgb
-                && Hw.BiosGet<bool>(Hw.Bios.HasBacklight);
+            // Only query the first time,
+            // then cache the response
+            if(this.KbdBacklightSupport == null)
+                // Per-key RGB keyboards currently not supported,
+                // as well as any devices that report no backlight
+                // (or if the BIOS call fails when trying to query)
+                this.KbdBacklightSupport =
+                    GetKbdType() != BiosData.KbdType.PerKeyRgb
+                    && Hw.BiosGet<bool>(Hw.Bios.HasBacklight);
+            return (bool) this.KbdBacklightSupport;
         }
 
         // Sets the keyboard backlight status given an enumerated value
@@ -209,15 +218,20 @@ namespace OmenMon.Hardware.Platform {
 
         // Checks whether keyboard color switching is supported
         public bool GetKbdColorSupport() {
-            // All keyboards that don't support backlight toggling,
-            // don't support color setting either
-            return GetKbdBacklightSupport();
+            // Only query the first time,
+            // then cache the response
+            if(this.KbdColorSupport == null)
+                // All keyboards that don't support backlight toggling,
+                // don't support color setting either
+                if((bool) (this.KbdColorSupport = GetKbdBacklightSupport()))
+                    // Only four-zone keyboard color setting is supported
+                    this.KbdColorSupport = GetKbdColor().ZoneCount == 3;
+            return (bool) this.KbdColorSupport;
         }
 
         // Sets the keyboard backlight color
         public void SetKbdColor(BiosData.ColorTable value) {
             Hw.BiosSetStruct(Hw.Bios.SetColorTable, value);
-
         }
 
         // Retrieves keyboard type from the BIOS
