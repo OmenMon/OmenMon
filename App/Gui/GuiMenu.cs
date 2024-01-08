@@ -1,5 +1,5 @@
   //\\   OmenMon: Hardware Monitoring & Control Utility
- //  \\  Copyright © 2023 Piotr Szczepański * License: GPL3
+ //  \\  Copyright © 2023-2024 Piotr Szczepański * License: GPL3
      //  https://omenmon.github.io/
 
 using System;
@@ -143,8 +143,8 @@ namespace OmenMon.AppGui {
         // Toggles the keyboard backlight on or off
         private void EventActionBacklight(object sender, EventArgs e) {
 
-            // If the main form has been initialized
-            if(Context.FormMain != null) {
+            // If the main form and the keyboard class have been initialized
+            if(Context.FormMain != null && Context.FormMain.Kbd != null) {
 
                 // Use the main form routine to update
                 Context.FormMain.Kbd.SetBacklight(!((ToolStripMenuItem) sender).Checked);
@@ -165,8 +165,8 @@ namespace OmenMon.AppGui {
         // Changes the keyboard backlight color
         private void EventActionBacklightColor(object sender, EventArgs e) {
 
-            // If the main form has been initialized
-            if(Context.FormMain != null) {
+            // If the main form and the keyboard class have been initialized
+            if(Context.FormMain != null && Context.FormMain.Kbd != null) {
 
                 // Use the main form routine to update
                 Context.FormMain.Kbd.SetColors(

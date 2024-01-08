@@ -1,5 +1,5 @@
   //\\   OmenMon: Hardware Monitoring & Control Utility
- //  \\  Copyright © 2023 Piotr Szczepański * License: GPL3
+ //  \\  Copyright © 2023-2024 Piotr Szczepański * License: GPL3
      //  https://omenmon.github.io/
 
 using System;
@@ -161,7 +161,13 @@ namespace OmenMon.AppGui {
 #region Event Actions
         // Toggles the keyboard backlight on or off
         private void EventActionBacklight(object sender, EventArgs e) {
-            Kbd.SetBacklight(!this.ChkKbdBacklight.Checked);
+
+            if(Kbd != null) // Use the keyboard class
+                Kbd.SetBacklight(!this.ChkKbdBacklight.Checked);
+
+            else // Fallback case for no customizable backlight color, only backlight toggle
+                Context.Op.Platform.System.SetKbdBacklight(!this.ChkKbdBacklight.Checked);
+
             UpdateKbd();
         }
 
@@ -402,10 +408,7 @@ namespace OmenMon.AppGui {
         private void EventColorPick(object sender, MouseEventArgs e) {
 
             // No action if backlight off or no support
-            if(!Context.Op.Platform.System.GetKbdBacklightSupport()
-                || !Context.Op.Platform.System.GetKbdColorSupport()
-                || !Kbd.GetBacklight())
-
+            if(Kbd == null || !Kbd.GetBacklight())
                 return;
 
             // Determine the clicked zone from co-ordinates
@@ -778,16 +781,20 @@ namespace OmenMon.AppGui {
             // Restore the default color of the color as parameter text box
             this.TxtKbdColorVal.ForeColor = Color.Empty;
 
-            // Disable the backlight toggle for unsupported devices
-            if(!Context.Op.Platform.System.GetKbdBacklightSupport())
+            // Disable the backlight toggle for unsupported devices,
+            // otherwise update the keyboard backlight status
+            if(!Context.Op.Platform.System.GetKbdBacklightSupport()) {
+                this.ChkKbdBacklight.Checked = false;
                 this.ChkKbdBacklight.Enabled = false;
+            } else if(Kbd != null) // Use the keyboard class
+                this.ChkKbdBacklight.Checked = Kbd.GetBacklight();
+            else // Fallback case for no customizable backlight color
+                this.ChkKbdBacklight.Checked =
+                    Context.Op.Platform.System.GetKbdBacklight() == BiosData.Backlight.On ? true : false;
 
             // Disable the interface when backlight is off or no support
-            if(!Context.Op.Platform.System.GetKbdBacklightSupport()
-                || !Context.Op.Platform.System.GetKbdColorSupport()
-                || !Kbd.GetBacklight()) {
+            if(Kbd == null || !Kbd.GetBacklight()) {
 
-                this.ChkKbdBacklight.Checked = false;
                 this.CmbKbdColorPreset.DataSource = null;
                 this.CmbKbdColorPreset.Enabled = false;
                 this.TxtKbdColorVal.Enabled = false;
@@ -799,7 +806,6 @@ namespace OmenMon.AppGui {
             } else {
 
                 // Enable the interface when backlight is on
-                this.ChkKbdBacklight.Checked = true;
                 this.CmbKbdColorPreset.BeginUpdate();
                 ColorPresets.Clear();
                 foreach(string name in Config.ColorPreset.Keys)
