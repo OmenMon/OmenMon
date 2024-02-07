@@ -128,9 +128,9 @@ namespace OmenMon.Driver {
                             if(!driver.IsOpen)
                                 log.AppendLine("Failed to open driver after re-installation");
                         } else { // Installation failed on the 2nd attempt, treat it as permanent
-                            log.Append($"Failed to install driver from file: \"{driverFilePath}\"").AppendLine(File.Exists(driverFilePath) ? " (exists)" : " (non-existent)");
-                            log.Append("1st Attempt: ").AppendLine(firstError);
-                            log.Append("2nd Attempt: ").AppendLine(secondError);
+                            log.Append($"Failed to install driver from file: \"{driverFilePath}\"").AppendLine(File.Exists(driverFilePath) ? " (exists) " : " (non-existent) ");
+                            log.Append("1st Try: ").AppendLine(firstError + " ");
+                            log.Append("2nd Try: ").AppendLine(secondError + " ");
                         }
                     }
 
