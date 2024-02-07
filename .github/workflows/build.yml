@@ -90,8 +90,13 @@ jobs:
       env:
         CODE_SIGN_CERT: ${{ secrets.CODE_SIGN_CERT }}
       run: >
-          echo $CODE_SIGN_CERT | base64 --decode > OmenMon-GitHub.pkx
+          echo $CODE_SIGN_CERT | base64 --decode > OmenMon-GitHub.pfx.txt
       shell: bash
+
+    - name: "Decode Certificate"
+      working-directory: ${{ github.workspace }}
+      run: >
+          certutil -decode OmenMon-GitHub.pfx.txt OmenMon-GitHub.pfx
 
     - name: "Sign OmenMon"
       working-directory: ${{ github.workspace }}
