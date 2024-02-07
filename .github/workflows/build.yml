@@ -1,6 +1,6 @@
 #
 #  //\\   OmenMon: Hardware Monitoring & Control Utility
-# //  \\  Copyright © 2023 Piotr Szczepański * License: GPL3
+# //  \\  Copyright © 2023-2024 Piotr Szczepański * License: GPL3
 #     //  https://omenmon.github.io/
 #
 # OmenMon Build Workflow
@@ -84,6 +84,23 @@ jobs:
         -p:AssemblyVersionWord=${{inputs.version_word}}
         -p:Configuration=${{matrix.configuration}}
         -t:Build ${{vars.SOLUTION_FILE}}
+
+    - name: "Retrieve Certificate"
+      working-directory: ${{ github.workspace }}
+      env:
+        CODE_SIGN_CERT: ${{ secrets.CODE_SIGN_CERT }}
+      run: >
+          echo $CODE_SIGN_CERT | base64 --decode > OmenMon-GitHub.pkx
+      shell: bash
+
+    - name: "Sign OmenMon"
+      working-directory: ${{ github.workspace }}
+      run: >
+        signtool sign
+        /d OmenMon /du https://omenmon.github.io/
+        /f OmenMon-GitHub.pfx /fd sha256
+        /td sha256 /tr http://timestamp.digicert.com/
+        /v ${{ vars.BIN_DIR }}\\OmenMon.exe
 
     - name: "Upload OmenMon"
       uses: actions/upload-artifact@v3
