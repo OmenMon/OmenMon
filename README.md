@@ -14,7 +14,7 @@ Most features are specific to _HP_ devices with a compatible BIOS interface expo
 
 ## License
 
-**OmenMon** Copyright © 2023 [Piotr Szczepański](https://piotr.szczepanski.name/)
+**OmenMon** Copyright © 2023-2024 [Piotr Szczepański](https://piotr.szczepanski.name/)
 
 This application is _free software_: you can redistribute it and/or modify it under the terms of the [GNU General Public License Version 3](https://www.gnu.org/licenses/gpl-3.0.html#license-text) as published by the [Free Software Foundation](https://www.fsf.org/). The full text of the license is available as `LICENSE.md` in this repository or on the [Web page](https://omenmon.github.io/more#license).
 
