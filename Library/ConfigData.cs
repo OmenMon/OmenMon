@@ -223,6 +223,10 @@ namespace OmenMon.Library {
         // (as long as KeyCustomAction is set to false)
         public static bool KeyToggleFanProgram = false;
 
+        // If true, Omen key cycles through all fan programs,
+        // instead of toggling the default fan program on and off
+        public static bool KeyToggleFanProgramCycleAll = true;
+
         // Show window first Omen key press (if not shown already),
         // before using subsequent keypresses to control fan program
         public static bool KeyToggleFanProgramShowGuiFirst = true;
