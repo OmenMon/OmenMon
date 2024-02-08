@@ -1,5 +1,5 @@
   //\\   OmenMon: Hardware Monitoring & Control Utility
- //  \\  Copyright © 2023 Piotr Szczepański * License: GPL3
+ //  \\  Copyright © 2023-2024 Piotr Szczepański * License: GPL3
      //  https://omenmon.github.io/
 
 using System;
@@ -65,6 +65,7 @@ namespace OmenMon.External {
         public const int WM_DPICHANGED_BEFOREPARENT = 0x02E2;
         public const int WM_GETDPISCALEDSIZE        = 0x02E4;
         public const int WM_INITDIALOG              = 0x0110;
+        public const int WM_POWERBROADCAST          = 0x0218;
         public const int WM_USER                    = 0x0400;
 
         // Device mode
@@ -110,6 +111,9 @@ namespace OmenMon.External {
             public int dmPanningHeight;
 
         }
+
+        // Device notification type
+        public const uint DEVICE_NOTIFY_WINDOW_HANDLE = 0;
 
         // DPI awareness context
         public enum DPI_AWARENESS_CONTEXT {
@@ -170,6 +174,10 @@ namespace OmenMon.External {
         [DllImport(DllName, CallingConvention = CallingConvention.Winapi)]
         [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
         public static extern bool PostMessage(IntPtr hWnd, [MarshalAs(UnmanagedType.U4)] uint msg, IntPtr wParam, IntPtr lParam);
+
+        [DllImport(DllName, CallingConvention = CallingConvention.Winapi)]
+        [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
+        public static extern uint RegisterSuspendResumeNotification(IntPtr hWnd, uint flags);
 
         [DllImport(DllName, CallingConvention = CallingConvention.Winapi)]
         [DefaultDllImportSearchPaths(DllImportSearchPath.System32)]
