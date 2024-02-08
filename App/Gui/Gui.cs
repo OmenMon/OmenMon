@@ -1,9 +1,10 @@
   //\\   OmenMon: Hardware Monitoring & Control Utility
- //  \\  Copyright © 2023 Piotr Szczepański * License: GPL3
+ //  \\  Copyright © 2023-2024 Piotr Szczepański * License: GPL3
      //  https://omenmon.github.io/
 
 using System;
 using System.Drawing;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using OmenMon.External;
 using OmenMon.Library;
@@ -12,6 +13,9 @@ namespace OmenMon.AppGui {
 
     // Implements general GUI-specific functionality
     public static class Gui {
+
+        // Registration handle
+        private static IntPtr RegistrationHandle;
 
         // State flags
         public static bool IsInitialized { get; private set; }
@@ -125,6 +129,40 @@ namespace OmenMon.AppGui {
         // Registers a specific message
         public static uint RegisterMessage(string msg) {
             return User32.RegisterWindowMessage(msg);
+        }
+
+        // Registers a callback for suspend
+        // and resume power event notifications
+        public static bool RegisterSuspendResumeNotification(
+            Func<IntPtr, uint, IntPtr, uint> Callback) {
+
+            // Retain the registration handle
+            RegistrationHandle = new IntPtr();
+
+            // Set up the structure for the received data
+            PowrProf.DEVICE_NOTIFY_SUBSCRIBE_PARAMETERS Recipient
+                = new PowrProf.DEVICE_NOTIFY_SUBSCRIBE_PARAMETERS();
+
+            // Populate the data structure with the callback function delegate
+            Recipient.Callback = new PowrProf.DeviceNotifyCallbackRoutine(Callback);
+            Recipient.Context = IntPtr.Zero;
+
+            // Obtain a pointer to the recipient structure
+            IntPtr RecipientPtr = Marshal.AllocHGlobal(Marshal.SizeOf(Recipient));
+            Marshal.StructureToPtr(Recipient, RecipientPtr, false);
+
+            // Register for power suspend and resume notifications
+            return PowrProf.PowerRegisterSuspendResumeNotification(
+                PowrProf.DEVICE_NOTIFY_CALLBACK,
+                ref Recipient, ref RegistrationHandle) == 0;
+
+        }
+
+        // Removes the callback for power event notifications
+        public static bool UnregisterSuspendResumeNotification() {
+            return RegistrationHandle != null ?
+                PowrProf.PowerUnregisterSuspendResumeNotification(RegistrationHandle) == 0
+                : true;
         }
 #endregion
 
