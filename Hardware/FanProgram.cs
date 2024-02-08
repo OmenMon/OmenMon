@@ -1,5 +1,5 @@
   //\\   OmenMon: Hardware Monitoring & Control Utility
- //  \\  Copyright © 2023 Piotr Szczepański * License: GPL3
+ //  \\  Copyright © 2023-2024 Piotr Szczepański * License: GPL3
      //  https://omenmon.github.io/
 
 using System;
@@ -63,6 +63,7 @@ namespace OmenMon.Hardware.Platform {
         // State flags
         public bool IsAlternate { get; private set; }
         public bool IsEnabled { get; private set; }
+        public bool IsSuspended { get; private set; }
 
         // Last fan mode and GPU power data before the program started
         private BiosData.FanMode LastFanMode;
@@ -87,6 +88,7 @@ namespace OmenMon.Hardware.Platform {
             this.GpuPowerData = default(BiosData.GpuPowerData);
             this.IsAlternate = false;
             this.IsEnabled = false;
+            this.IsSuspended = false;
             this.LastFanMode = BiosData.FanMode.Default;
             this.LastGpuPowerData = default(BiosData.GpuPowerData);
             this.Levels = new List<byte>();
@@ -101,6 +103,26 @@ namespace OmenMon.Hardware.Platform {
         public string GetName() {
 
             return this.Name;
+
+        }
+
+        // Re-enable fan program
+        // following a resume from suspend
+        public bool Resume() {
+
+            // Fail if no program active
+            // or if not suspended
+            if(!this.IsEnabled || !this.IsSuspended)
+                return false;
+
+            // Set the state flag
+            this.IsSuspended = false;
+
+            // Update the program
+            Update();
+
+            // Report success
+            return true;
 
         }
 
@@ -139,6 +161,35 @@ namespace OmenMon.Hardware.Platform {
 
         }
 
+        // Suspend the running fan program
+        public bool Suspend() {
+
+            // Fail if no program active
+            // or if already suspended
+            if(!this.IsEnabled || this.IsSuspended)
+                return false;
+
+            // Set the state flag
+            this.IsSuspended = true;
+
+            // Reset fan speed
+            SetFanLevel(new byte[] { Byte.MaxValue, Byte.MaxValue } );
+
+            // Disable manual fan mode
+            if(Config.FanLevelNeedManual)
+                Platform.Fans.SetManual(false);
+
+            // Restore the previous fan mode
+            UpdateFanMode(true, this.LastFanMode);
+
+            // Restore the previous GPU power settings
+            UpdateGpuPower(true, this.LastGpuPowerData);
+
+            // Report success
+            return true;
+
+        }
+
         // Terminates the running fan program, if any is running
         public bool Terminate() {
 
@@ -162,6 +213,7 @@ namespace OmenMon.Hardware.Platform {
             // Set the state flags
             this.IsAlternate = false;
             this.IsEnabled = false;
+            this.IsSuspended = false;
 
             // Reset data
             Reset();
@@ -178,7 +230,8 @@ namespace OmenMon.Hardware.Platform {
         public bool Update() {
 
             // Fail if no program active
-            if(!this.IsEnabled)
+            // or program is suspended
+            if(!this.IsEnabled || this.IsSuspended)
                 return false;
 
             // Find out the current maximum temperature,
