@@ -199,10 +199,13 @@
             <Minimized>true</Minimized>
         </KeyCustomAction>
 
-        <!-- If the application window is already shown on screen,
-             and custom action is disabled, subsequent Omen key
-             presses toggle the default fan program on and off -->
+        <!-- Use the Omen key to control fan program
+             (as long as KeyCustomAction is set to false) -->
         <KeyToggleFanProgram>false</KeyToggleFanProgram>
+
+        <!-- Show window upon first Omen key press (if not shown already),
+             before using subsequent keypresses to control fan program -->
+        <KeyToggleFanProgramShowGuiFirst>true</KeyToggleFanProgramShowGuiFirst>
 
         <!-- Preset Settings -->
 
