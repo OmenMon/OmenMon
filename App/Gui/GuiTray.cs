@@ -1,5 +1,5 @@
   //\\   OmenMon: Hardware Monitoring & Control Utility
- //  \\  Copyright © 2023 Piotr Szczepański * License: GPL3
+ //  \\  Copyright © 2023-2024 Piotr Szczepański * License: GPL3
      //  https://omenmon.github.io/
 
 using System;
@@ -90,6 +90,11 @@ namespace OmenMon.AppGui {
             this.Filter = new GuiFilter(Context);
             Application.AddMessageFilter(this.Filter);
 
+            // Receive suspend and resume event notifications
+            // only if configured to suspend and resume fan program
+            if(Config.FanProgramSuspend)
+                Gui.RegisterSuspendResumeNotification(this.Op.SuspendResumeCallback);
+
             // Set up the timer
             this.Timer = new System.Windows.Forms.Timer(Components);
             this.Timer.Interval = Config.GuiTimerInterval;
@@ -140,6 +145,9 @@ namespace OmenMon.AppGui {
 
             // Unregister the power-mode change event handler
             SystemEvents.PowerModeChanged -= EventPowerChange;
+
+            // Stop receiving power event notifications
+            Gui.UnregisterSuspendResumeNotification();
 
             // Terminate the fan program, if any
             if(this.Op.Program.IsEnabled)
