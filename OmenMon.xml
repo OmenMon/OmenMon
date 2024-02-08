@@ -103,6 +103,10 @@
              at the cost of one more WMI BIOS call: can be used to reduce EC load) -->
         <FanProgramModeCheckFirst>false</FanProgramModeCheckFirst>
 
+        <!-- If true, fan program will be suspended whenever the system enters low-power mode
+             such as sleep, standby or hibernation, to be automatically re-enabled upon resume -->
+        <FanProgramSuspend>true</FanProgramSuspend>
+
         <!-- Fan program definitions
              Curve visualization: https://www.desmos.com/calculator/6vfpghtud0
                                   (editable initial data for the Power program) -->
