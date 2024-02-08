@@ -2,7 +2,7 @@
 <!--
 
   //\\   OmenMon: Hardware Monitoring & Control Utility
- //  \\  Copyright © 2023 Piotr Szczepański * License: GPL3
+ //  \\  Copyright © 2023-2024 Piotr Szczepański * License: GPL3
      //  https://omenmon.github.io/
 
 -->
@@ -77,6 +77,7 @@
         <Compile Include="External\ColorMgmt.cs"/>
         <Compile Include="External\Gdi.cs"/>
         <Compile Include="External\Kernel.cs"/>
+        <Compile Include="External\PowrProf.cs"/>
         <Compile Include="External\ShellCore.cs"/>
         <Compile Include="External\TaskSchd.cs"/>
         <Compile Include="External\User.cs"/>
