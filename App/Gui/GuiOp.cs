@@ -113,7 +113,7 @@ namespace OmenMon.AppGui {
                         message.Replace(
                             Config.Locale.Get(Config.L_PROG + "SubMax"),
                             Conv.RTF_SUB1 + Config.Locale.Get(Config.L_PROG + "SubMax") + Conv.RTF_SUBSUP0)
-                        + " " + name);
+                        + ": " + name);
 
                 // Also put it in the tray icon tooltip
                 Context.SetNotifyText(
@@ -131,7 +131,8 @@ namespace OmenMon.AppGui {
         // Launches when the Omen key has been pressed
         public void KeyHandler(Gui.MessageParam lastParam) {
 
-            // If Omen key action is set to custom
+            // If Omen key action is set
+            // to trigger a custom action
             if(Config.KeyCustomActionEnabled) {
 
                 // Launch the action
@@ -143,12 +144,14 @@ namespace OmenMon.AppGui {
                     ProcessWindowStyle.Minimized : ProcessWindowStyle.Normal;
                 customAction.Start();
 
-            // If Omen key is set to toggle the default fan program 
-            // (on subsequent presses, when the form is already shown)
+            // If Omen key is set
+            // to toggle fan program 
             } else if(Config.KeyToggleFanProgram) {
 
                 // Show the form on first press
-                if(Context.FormMain == null || !Context.FormMain.Visible)
+                // if configured to do so and not already shown
+                if(Config.KeyToggleFanProgramShowGuiFirst &&
+                    (Context.FormMain == null || !Context.FormMain.Visible))
                     Context.ShowFormMain();
 
                 else {
@@ -162,8 +165,9 @@ namespace OmenMon.AppGui {
                         this.Program.Run(Config.FanProgramDefault);
 
                     // Update the main form fan controls
-                    // (main form is being shown)
-                    Context.FormMain.UpdateFanCtl();
+                    // (if main form is being shown)
+                    if(Context.FormMain != null && Context.FormMain.Visible)
+                        Context.FormMain.UpdateFanCtl();
 
                 }
 
