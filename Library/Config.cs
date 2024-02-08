@@ -1,5 +1,5 @@
   //\\   OmenMon: Hardware Monitoring & Control Utility
- //  \\  Copyright © 2023 Piotr Szczepański * License: GPL3
+ //  \\  Copyright © 2023-2024 Piotr Szczepański * License: GPL3
      //  https://omenmon.github.io/
 
 using System;
@@ -193,6 +193,9 @@ namespace OmenMon.Library {
 
                     if(GetBool(xml, XmlPrefix + "FanProgramModeCheckFirst", out flag))
                         FanProgramModeCheckFirst = flag;
+
+                    if(GetBool(xml, XmlPrefix + "FanProgramSuspend", out flag))
+                        FanProgramSuspend = flag;
 
                     GpuPowerDefault =
                         GetString(xml, XmlPrefix + "GpuPowerDefault");
@@ -448,6 +451,7 @@ namespace OmenMon.Library {
                     SetString(xml, XmlPrefix + "FanProgramDefault", FanProgramDefault);
                     SetString(xml, XmlPrefix + "FanProgramDefaultAlt", FanProgramDefaultAlt);
                     SetBool(xml, XmlPrefix + "FanProgramModeCheckFirst", FanProgramModeCheckFirst);
+                    SetBool(xml, XmlPrefix + "FanProgramSuspend", FanProgramSuspend);
 
                     // Fan programs (again, so that the settings are
                     // sorted alphabetically for the user's convenience)

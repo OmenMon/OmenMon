@@ -1,5 +1,5 @@
   //\\   OmenMon: Hardware Monitoring & Control Utility
- //  \\  Copyright © 2023 Piotr Szczepański * License: GPL3
+ //  \\  Copyright © 2023-2024 Piotr Szczepański * License: GPL3
      //  https://omenmon.github.io/
 
 using System;
@@ -105,6 +105,10 @@ namespace OmenMon.Library {
         // Whether to check first (using the EC) if the fan mode is not set already
         // before setting it (using a BIOS WMI call) when a fan program is running
         public static bool FanProgramModeCheckFirst = false;
+
+        // If true, fan program will be suspended whenever the system enters low-power mode
+        // such as sleep, standby or hibernation, to be automatically re-enabled upon resume
+        public static bool FanProgramSuspend = true;
 
         // Configuration XML file path
         public static string FilePath = "";
