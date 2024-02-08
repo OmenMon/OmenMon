@@ -219,10 +219,13 @@ namespace OmenMon.Library {
         public static string KeyCustomActionExecArgs = "";
         public static bool KeyCustomActionMinimized = false;
 
-        // If the application window is already shown on screen,
-        // and custom action is disabled, subsequent Omen key
-        // presses toggle the default fan program on and off
+        // Use the Omen key to control fan program
+        // (as long as KeyCustomAction is set to false)
         public static bool KeyToggleFanProgram = false;
+
+        // Show window first Omen key press (if not shown already),
+        // before using subsequent keypresses to control fan program
+        public static bool KeyToggleFanProgramShowGuiFirst = true;
 
         // Localizable string prefixes and suffixes
         public const string L_CLI = "Cli";

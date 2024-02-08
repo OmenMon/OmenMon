@@ -227,6 +227,9 @@ namespace OmenMon.Library {
                     if(GetBool(xml, XmlPrefix + "KeyToggleFanProgram", out flag))
                         KeyToggleFanProgram = flag;
 
+                    if(GetBool(xml, XmlPrefix + "KeyToggleFanProgramShowGuiFirst", out flag))
+                        KeyToggleFanProgramShowGuiFirst = flag;
+
                     if(GetWord(xml, XmlPrefix + "PresetRefreshRateHigh", out value))
                         PresetRefreshRateHigh = value;
 
@@ -517,6 +520,7 @@ namespace OmenMon.Library {
                     SetString(xml, XmlPrefixKeyCustomAction + "ExecArgs", KeyCustomActionExecArgs);
                     SetBool(xml, XmlPrefixKeyCustomAction + "Minimized", KeyCustomActionMinimized);
                     SetBool(xml, XmlPrefix + "KeyToggleFanProgram", KeyToggleFanProgram);
+                    SetBool(xml, XmlPrefix + "KeyToggleFanProgramShowGuiFirst", KeyToggleFanProgramShowGuiFirst);
                     SetUInt(xml, XmlPrefix + "PresetRefreshRateHigh", (uint) PresetRefreshRateHigh);
                     SetUInt(xml, XmlPrefix + "PresetRefreshRateLow", (uint) PresetRefreshRateLow);
 
