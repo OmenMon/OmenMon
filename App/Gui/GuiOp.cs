@@ -6,6 +6,7 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Windows.Forms;
+using OmenMon.External;
 using OmenMon.Hardware.Bios;
 using OmenMon.Hardware.Ec;
 using OmenMon.Hardware.Platform;
@@ -198,6 +199,26 @@ namespace OmenMon.AppGui {
             // Separately also update the main form, if it's visible
             if(Context.FormMain != null && Context.FormMain.Visible)
                Context.FormMain.UpdateSys();
+
+        }
+
+        // Responds to the system entering and resuming from low-power state events
+        public uint SuspendResumeCallback(IntPtr context, uint type, IntPtr setting) {
+
+            // System is resuming from suspend
+            if(type == PowrProf.PBT_APMRESUMEAUTOMATIC)
+
+                // Resume the fan program
+                this.Program.Resume();
+
+            // System is about to be suspended
+            // and a fan program is running
+            else if(type == PowrProf.PBT_APMSUSPEND)
+
+                // Suspend the fan program
+                this.Program.Suspend();
+
+            return 0;
 
         }
 
