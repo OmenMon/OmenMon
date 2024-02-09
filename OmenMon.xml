@@ -211,6 +211,9 @@
              before using subsequent keypresses to control fan program -->
         <KeyToggleFanProgramShowGuiFirst>true</KeyToggleFanProgramShowGuiFirst>
 
+        <!-- Do not show a balloon tip notification when changing programs -->
+        <KeyToggleFanProgramSilent>false</KeyToggleFanProgramSilent>
+
         <!-- Preset Settings -->
 
         <!-- High display refresh rate preset value [Hz] -->
