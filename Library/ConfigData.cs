@@ -93,8 +93,8 @@ namespace OmenMon.Library {
         public static List<string> FanModesSticky = new List<string> { "Default", "Performance", "Cool" };
 
         // Fan programs (populated at runtime)
-        public static SortedDictionary<string, FanProgramData> FanProgram =
-            new SortedDictionary<string, FanProgramData>();
+        public static SortedList<string, FanProgramData> FanProgram =
+            new SortedList<string, FanProgramData>();
 
         // Default fan program, which might be loaded on startup
         public static string FanProgramDefault; // Unset by default, since there is no default fan program
@@ -230,6 +230,9 @@ namespace OmenMon.Library {
         // Show window first Omen key press (if not shown already),
         // before using subsequent keypresses to control fan program
         public static bool KeyToggleFanProgramShowGuiFirst = true;
+
+        // Do not show a balloon tip notification when changing programs
+        public static bool KeyToggleFanProgramSilent = false;
 
         // Localizable string prefixes and suffixes
         public const string L_CLI = "Cli";

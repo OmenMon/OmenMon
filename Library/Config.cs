@@ -233,6 +233,9 @@ namespace OmenMon.Library {
                     if(GetBool(xml, XmlPrefix + "KeyToggleFanProgramShowGuiFirst", out flag))
                         KeyToggleFanProgramShowGuiFirst = flag;
 
+                    if(GetBool(xml, XmlPrefix + "KeyToggleFanProgramSilent", out flag))
+                        KeyToggleFanProgramSilent = flag;
+
                     if(GetWord(xml, XmlPrefix + "PresetRefreshRateHigh", out value))
                         PresetRefreshRateHigh = value;
 
@@ -525,6 +528,7 @@ namespace OmenMon.Library {
                     SetBool(xml, XmlPrefix + "KeyToggleFanProgram", KeyToggleFanProgram);
                     SetBool(xml, XmlPrefix + "KeyToggleFanProgramCycleAll", KeyToggleFanProgramCycleAll);
                     SetBool(xml, XmlPrefix + "KeyToggleFanProgramShowGuiFirst", KeyToggleFanProgramShowGuiFirst);
+                    SetBool(xml, XmlPrefix + "KeyToggleFanProgramSilent", KeyToggleFanProgramSilent);
                     SetUInt(xml, XmlPrefix + "PresetRefreshRateHigh", (uint) PresetRefreshRateHigh);
                     SetUInt(xml, XmlPrefix + "PresetRefreshRateLow", (uint) PresetRefreshRateLow);
 
