@@ -131,22 +131,9 @@ namespace OmenMon.AppGui {
         // Launches when the Omen key has been pressed
         public void KeyHandler(Gui.MessageParam lastParam) {
 
-            // If Omen key action is set
-            // to trigger a custom action
-            if(Config.KeyCustomActionEnabled) {
-
-                // Launch the action
-                Process customAction = new Process();
-                customAction.StartInfo.FileName = Config.KeyCustomActionExecCmd;
-                customAction.StartInfo.Arguments = Config.KeyCustomActionExecArgs;
-                customAction.StartInfo.UseShellExecute = false; // Required for environment change
-                customAction.StartInfo.WindowStyle = Config.KeyCustomActionMinimized ?
-                    ProcessWindowStyle.Minimized : ProcessWindowStyle.Normal;
-                customAction.Start();
-
             // If Omen key is set
             // to toggle fan program 
-            } else if(Config.KeyToggleFanProgram) {
+            if(Config.KeyToggleFanProgram) {
 
                 // Show the form on first press
                 // if configured to do so and not already shown
@@ -156,20 +143,66 @@ namespace OmenMon.AppGui {
 
                 else {
 
-                    // Terminate a program, if there is one running
-                    if(this.Program.IsEnabled)
-                        this.Program.Terminate();
+                    // Configured to cycle
+                    // through all fan programs
+                    if(Config.KeyToggleFanProgramCycleAll) {
 
-                    // Run the default program, if no program running
-                    else
-                        this.Program.Run(Config.FanProgramDefault);
+                        // Default to the first fan program 
+                        string next = Config.FanProgram.Keys[0];
+
+                        // If a program is running,
+                        // cycle to the next one, if exists
+                        if(this.Program.IsEnabled)
+                            try {
+                                next = Config.FanProgram.Keys[
+                                    Config.FanProgram.IndexOfKey(this.Program.GetName()) + 1];
+                            } catch { }
+
+                        // Run the next fan program
+                        this.Program.Run(next);
+
+                    // Configured to toggle
+                    // default fan program on and off
+                    } else {
+
+                        // Terminate a program, if there is one running
+                        if(this.Program.IsEnabled)
+                            this.Program.Terminate();
+
+                        // Run the default program, if no program running
+                        else
+                            this.Program.Run(Config.FanProgramDefault);
+
+                        }
 
                     // Update the main form fan controls
                     // (if main form is being shown)
                     if(Context.FormMain != null && Context.FormMain.Visible)
                         Context.FormMain.UpdateFanCtl();
 
+                    // Otherwise, show a balloon tip notification
+                    // unless configured to toggle programs silently
+                    else if(!Config.KeyToggleFanProgramSilent)
+                        this.FanProgramCallback(
+                            FanProgram.Severity.Important,
+                            this.Program.IsEnabled ?
+                                Config.Locale.Get(Config.L_PROG) + ": " + this.Program.GetName()
+                                : Config.Locale.Get(Config.L_PROG + "End"));
+
                 }
+
+            // If Omen key action is set
+            // to trigger a custom action
+            } else if(Config.KeyCustomActionEnabled) {
+
+                // Launch the action
+                Process customAction = new Process();
+                customAction.StartInfo.FileName = Config.KeyCustomActionExecCmd;
+                customAction.StartInfo.Arguments = Config.KeyCustomActionExecArgs;
+                customAction.StartInfo.UseShellExecute = false; // Required for environment change
+                customAction.StartInfo.WindowStyle = Config.KeyCustomActionMinimized ?
+                    ProcessWindowStyle.Minimized : ProcessWindowStyle.Normal;
+                customAction.Start();
 
             } else {
 
