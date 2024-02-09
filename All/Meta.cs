@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 // Project metadata (except version information)
 [assembly: AssemblyCompany("OmenMon")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCopyright("© 2023 Piotr Szczepański")]
+[assembly: AssemblyCopyright("© 2023-2024 Piotr Szczepański")]
 [assembly: AssemblyCulture("")]
 [assembly: AssemblyDescription("Omen Hardware Monitor")]
 [assembly: AssemblyTitle("Omen Monitoring & Control")]
