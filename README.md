@@ -21,3 +21,7 @@ This application is _free software_: you can redistribute it and/or modify it un
 **OmenMon** builds upon the work of several other projects. Please see the [acknowledgements](https://omenmon.github.io/more#acknowledgements) for details.
 
 _This software is not affiliated with or endorsed by HP. Any brand names are used for informational purposes only._
+
+## Related Projects
+
+* [HP Omen Sequencer Keyboard Lights Control Utility](https://github.com/slysherz/lights-for-omen-sequencer) by [@slysherz](https://github.com/slysherz/)
