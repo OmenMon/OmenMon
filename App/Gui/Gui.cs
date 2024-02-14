@@ -17,6 +17,9 @@ namespace OmenMon.AppGui {
         // Registration handle
         private static IntPtr RegistrationHandle;
 
+        // Registration callback
+        private static PowrProf.DeviceNotifyCallbackRoutine RegistrationCallback;
+
         // State flags
         public static bool IsInitialized { get; private set; }
 
@@ -144,7 +147,8 @@ namespace OmenMon.AppGui {
                 = new PowrProf.DEVICE_NOTIFY_SUBSCRIBE_PARAMETERS();
 
             // Populate the data structure with the callback function delegate
-            Recipient.Callback = new PowrProf.DeviceNotifyCallbackRoutine(Callback);
+            RegistrationCallback = new PowrProf.DeviceNotifyCallbackRoutine(Callback);
+            Recipient.Callback = RegistrationCallback;
             Recipient.Context = IntPtr.Zero;
 
             // Obtain a pointer to the recipient structure
