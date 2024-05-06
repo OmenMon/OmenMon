@@ -24,4 +24,5 @@ _This software is not affiliated with or endorsed by HP. Any brand names are use
 
 ## Related Projects
 
-* [HP Omen Sequencer Keyboard Lights Control Utility](https://github.com/slysherz/lights-for-omen-sequencer) by [@slysherz](https://github.com/slysherz/)
+* [XML Translator](https://github.com/Initsnow/xmltranslator) by **[@Initsnow](https://github.com/Initsnow)** – for [translating OmenMon](https://github.com/OmenMon/Localization) into other languages
+* [HP Omen Sequencer Keyboard Lights Control Utility](https://github.com/slysherz/lights-for-omen-sequencer) by **[@slysherz](https://github.com/slysherz/)**
