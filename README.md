@@ -1,3 +1,6 @@
+[简体中文](./README.zh-CN.md) | English
+
+
 # OmenMon
 
 <p align="center"><a href="https://omenmon.github.io/">Project Page &amp; Documentation</a> • <a href="https://omenmon.github.io/build">How to Build</a> • <a href="https://omenmon.github.io/build#history">Version History</a> • <a href="https://github.com/OmenMon/Localization">Translations</a> • <a href="https://github.com/OmenMon/OmenMon/releases/latest">Download ⭳</a></p>
