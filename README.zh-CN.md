@@ -2,7 +2,7 @@
 
 <p align="center"><a href="https://omenmon.github.io/">项目页面 &amp; 文档</a> • <a href="https://omenmon.github.io/build">怎么构建</a> • <a href="https://omenmon.github.io/build#history">更新历史</a> • <a href="https://github.com/OmenMon/Localization">翻译</a> • <a href="https://github.com/OmenMon/OmenMon/releases/latest">下载 ⭳</a></p>
 
-![OmenMon 图形界面预览](https://omenmon.github.io/pic/gui-overview.png)
+![OmenMon 图形界面预览](https://omenmon.github.io/pic/zh-cn/gui-overview.png-zh_cn.png)
 
 **OmenMon** 是一款轻量级的应用程序，可与您的 _HP 暗影精灵（OMEN）& 部分光影精灵（Victus）_ 机型的嵌入式控制器（EC）和 WMI BIOS 进行交互，以此做到 [查看设备温度](https://omenmon.github.io/gui#temperature) 和 [动态调整风扇速度](https://omenmon.github.io/gui#fan-control) 。它还可以帮助您自定义您最喜欢的 [键盘背光颜色](https://omenmon.github.io/gui#keyboard) 以及 [拦截 _OMEN_ 键并自定义](https://omenmon.github.io/config#key) 。
 
