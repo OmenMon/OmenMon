@@ -42,7 +42,8 @@ namespace OmenMon.AppGui {
         internal GuiOp Op;
 
         // Stores the system timer
-        private System.Windows.Forms.Timer Timer;
+        private System.Windows.Forms.Timer TrayUpdateTimer;
+        private System.Windows.Forms.Timer HeartbeatTimer;
 
         // Stores the number of ticks elapsed since
         // the last update of a particular category
@@ -96,10 +97,15 @@ namespace OmenMon.AppGui {
                 Gui.RegisterSuspendResumeNotification(this.Op.SuspendResumeCallback);
 
             // Set up the timer
-            this.Timer = new System.Windows.Forms.Timer(Components);
-            this.Timer.Interval = Config.GuiTimerInterval;
-            this.Timer.Tick += EventTimerTick;
-            this.Timer.Enabled = true;
+            this.TrayUpdateTimer = new System.Windows.Forms.Timer(Components);
+            this.TrayUpdateTimer.Interval = Config.GuiTimerInterval;
+            this.TrayUpdateTimer.Tick += EventTrayUpdateTimerTick;
+            this.TrayUpdateTimer.Enabled = true;
+            
+            this.HeartbeatTimer = new System.Windows.Forms.Timer(Components);
+            this.HeartbeatTimer.Interval = Config.HeartbeatTimerInterval;
+            this.HeartbeatTimer.Tick += HardwareHeartbeatTick;
+            this.HeartbeatTimer.Enabled = true;
 
             // Show the main form if requested by the environment variable
             if(Environment.GetEnvironmentVariable(Config.EnvVarSelfName) != null
@@ -181,11 +187,16 @@ namespace OmenMon.AppGui {
         }
 
         // Handles a timer tick
-        private void EventTimerTick(object sender, EventArgs e) {
-
+        private void EventTrayUpdateTimerTick(object sender, EventArgs e)
+        {
             // Perform the updates as scheduled
             Update();
+        }
 
+        private void HardwareHeartbeatTick(object sender, EventArgs e)
+        {
+            // send a heartbeat to the bios for new devices
+            BiosCtl.Instance.GetFanCount();
         }
 #endregion
 

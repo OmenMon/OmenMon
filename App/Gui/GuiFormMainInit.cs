@@ -469,7 +469,7 @@ namespace OmenMon.AppGui {
             this.RtfSysInfo.ReadOnly = true;
             this.RtfSysInfo.ScrollBars = RichTextBoxScrollBars.None;
             this.RtfSysInfo.ShortcutsEnabled = false;
-            this.RtfSysInfo.Size = new Size(277, 43);
+            this.RtfSysInfo.Size = new Size(277, 50);
             this.RtfSysInfo.TabIndex = 0;
             this.RtfSysInfo.TabStop = false;
             this.RtfSysInfo.WordWrap = false;

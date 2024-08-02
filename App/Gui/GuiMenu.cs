@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Forms;
 using OmenMon.Hardware.Bios;
 using OmenMon.Hardware.Ec;
@@ -84,8 +85,6 @@ namespace OmenMon.AppGui {
         private const string I_GPU_POWER_MAX = P_GPU_POWER + S_GPU_POWER_MAX;
         private const string I_GPU_POWER_MED = P_GPU_POWER + S_GPU_POWER_MED;
         private const string I_GPU_POWER_MIN = P_GPU_POWER + S_GPU_POWER_MIN;
-        private const string I_GPU_REFRESH_HIGH = P_GPU_REFRESH + S_GPU_REFRESH_HIGH;
-        private const string I_GPU_REFRESH_LOW = P_GPU_REFRESH + S_GPU_REFRESH_LOW;
         private const string I_GPU_MODE_DISCRETE = P_GPU_MODE + S_GPU_MODE_DISCRETE;
         private const string I_GPU_MODE_OPTIMUS = P_GPU_MODE + S_GPU_MODE_OPTIMUS;
 
@@ -357,17 +356,14 @@ namespace OmenMon.AppGui {
         }
 
         // Changes the display refresh rate
-        private void EventActionGpuRefresh(object sender, EventArgs e) {
-
+        private void EventActionGpuRefresh(object sender, EventArgs e)
+        {
             // Set the requested refresh rate
-            Os.SetRefreshRate(
-                ((ToolStripMenuItem) sender).Name.Remove(0, P_GPU_REFRESH.Length)
-                == S_GPU_REFRESH_HIGH ?
-                    Config.PresetRefreshRateHigh : Config.PresetRefreshRateLow);
+            int refreshRate = int.Parse(((ToolStripMenuItem)sender).Name.TrimStart(P_GPU_REFRESH.ToCharArray()));
+            Os.SetRefreshRate(refreshRate);
 
             // Update the menu section
             UpdateGpuRefresh();
-
         }
 
         // Toggles the main GUI form
@@ -619,11 +615,16 @@ namespace OmenMon.AppGui {
             MenuGpu.DropDown.MouseEnter += EventDropDownMouseEnter;
             MenuGpu.DropDown.MouseLeave += EventDropDownMouseLeave;
             MenuGpu.DropDown.Opening += EventDropDownOpening;
-            MenuGpu.DropDownItems.AddRange(new ToolStripItem[] {
-                new ToolStripMenuItem(Config.PresetRefreshRateHigh.ToString() + " " + Config.Locale.Get(Config.L_UNIT + "Frequency") + " "
-                    + Config.Locale.Get(Config.L_GUI_MENU + I_GPU_REFRESH_HIGH), null, EventActionGpuRefresh, I_GPU_REFRESH_HIGH),
-                new ToolStripMenuItem(Config.PresetRefreshRateLow.ToString() + " " + Config.Locale.Get(Config.L_UNIT + "Frequency") + " "
-                    + Config.Locale.Get(Config.L_GUI_MENU + I_GPU_REFRESH_LOW), null, EventActionGpuRefresh, I_GPU_REFRESH_LOW),
+            var refreshRates = Os.GetAvailableRefreshRates();
+            foreach (var refreshRate in refreshRates)
+            {
+                MenuGpu.DropDownItems.Add(
+                    new ToolStripMenuItem(refreshRate.ToString() + " " + Config.Locale.Get(Config.L_UNIT + "Frequency"),
+                        null, EventActionGpuRefresh, P_GPU_REFRESH + refreshRate.ToString()));
+            }
+
+            MenuGpu.DropDownItems.AddRange(new ToolStripItem[]
+            {
                 new ToolStripSeparator(),
                 new ToolStripMenuItem(Config.Locale.Get(Config.L_GUI_MENU + I_GPU_POWER_MIN), null, EventActionGpuPower, I_GPU_POWER_MIN),
                 new ToolStripMenuItem(Config.Locale.Get(Config.L_GUI_MENU + I_GPU_POWER_MED), null, EventActionGpuPower, I_GPU_POWER_MED),
@@ -835,21 +836,20 @@ namespace OmenMon.AppGui {
                 // It's possible to set PPAB on with custom TGP off
 
             }
-
         }
 
         // Updates the checkboxes in the display refresh rate section
-        public void UpdateGpuRefresh() {
-
+        public void UpdateGpuRefresh()
+        {
             // Retrieve the current refresh rate
-            int refreshRate = Os.GetRefreshRate();
+            var currentRefreshRate = Os.GetRefreshRate();
+            var refreshRates = Os.GetAvailableRefreshRates();
 
-            // Set the checked status accordingly
-            ((ToolStripMenuItem) MenuGpu.DropDownItems[I_GPU_REFRESH_HIGH]).Checked =
-                (refreshRate == Config.PresetRefreshRateHigh);
-
-            ((ToolStripMenuItem) MenuGpu.DropDownItems[I_GPU_REFRESH_LOW]).Checked =
-                (refreshRate == Config.PresetRefreshRateLow);
+            foreach (var refreshRate in refreshRates)
+            {
+                var item = (ToolStripMenuItem)MenuGpu.DropDownItems[P_GPU_REFRESH + refreshRate.ToString()];
+                item.Checked = currentRefreshRate == refreshRate;
+            }
 
         }
 

@@ -3,6 +3,7 @@
      //  https://omenmon.github.io/
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Reflection;
@@ -63,6 +64,25 @@ namespace OmenMon.Library {
 
         }
 
+        public static List<int> GetAvailableRefreshRates()
+        {
+            User32.DEVMODE d = new User32.DEVMODE();
+            d.dmDeviceName = new string(new char[32]);
+            d.dmFormName = new string(new char[32]);
+            d.dmSize = (short)Marshal.SizeOf(d);
+            List<int> result = new List<int>();
+            var modenum = 0;
+            while (User32.EnumDisplaySettings(null, modenum++, ref d) == 1)
+            {
+                if (result.Contains(d.dmDisplayFrequency))
+                    break;
+                result.Add(d.dmDisplayFrequency);
+            }
+
+            result.Sort();
+            return result;
+        }
+        
         // Re-applies Windows color settings
         public static void ReloadColorSettings() {
 

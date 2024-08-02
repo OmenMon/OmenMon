@@ -189,8 +189,15 @@ namespace OmenMon.Hardware.Platform {
 
         // Switches the fan off or back on
         public void SetOff(bool flag) {
-            this.Switch.SetValue(flag ?
-                (int) PlatformData.FanSwitch.Off : (int) PlatformData.FanSwitch.On);
+            if (Config.FanLevelUseEc)
+                this.Switch.SetValue(flag ?
+                    (int) PlatformData.FanSwitch.Off : (int) PlatformData.FanSwitch.On);
+            else 
+                try {
+                    // Make a WMI BIOS call to set the level of both fans
+                    Hw.BiosSet(Hw.Bios.SetFanLevel, new byte[]{0x00,0x00});
+                } catch {}
+                
         }
 #endregion
 

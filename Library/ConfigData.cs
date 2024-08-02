@@ -209,6 +209,9 @@ namespace OmenMon.Library {
 
         // Timer interval, determines how frequently a tick occurs [ms]
         public const int GuiTimerInterval = 1000;
+        
+        // Timer interval, determines how frequently heartbeat event sent [ms]
+        public const int HeartbeatTimerInterval = 30000;
 
         // How long to show a tip in the notification area, disabled if set to 0
         public static int GuiTipDuration = 30000;
